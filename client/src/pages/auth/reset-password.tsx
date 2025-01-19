@@ -1,8 +1,7 @@
 import React from 'react'
 
-type Props = {}
 
-const ResetPasswrod = (props: Props) => {
+const ResetPasswrod = () => {
   return (
     <div>ResetPasswrod</div>
   )
