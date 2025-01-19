@@ -1,8 +1,8 @@
 {
-  "name": "api",
-  "version": "0.0.0",
-  "description": "TypeScript + Mongoose + MongoDB + Express API Server",
-  "author": "",
+  "name": "calo-api",
+  "version": "1.0.0",
+  "description": "Used Technologies TypeScript + Mongoose + MongoDB + Express API Server",
+  "author": "MoeOuni20",
   "license": "ISC",
   "scripts": {
     "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
@@ -22,6 +22,7 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.0.1",
     "envalid": "^7.3.1",
     "express": "^4.18.1",

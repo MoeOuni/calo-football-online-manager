@@ -56,6 +56,7 @@ const ProtectedRoutes = memo(() => {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
+          <Route path="*" element={<Navigate to={"/"} />} /> 
         </Route>
       </Routes>
     </Suspense>

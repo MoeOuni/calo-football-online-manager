@@ -1,14 +1,15 @@
-import { useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ProtectedRoutes, PublicRoutes } from "./routes";
+import { Toaster } from "@/components/ui/sonner";
+import { isAuthorizationCookieSet } from "./lib/utils";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const isAuthorized = isAuthorizationCookieSet();
 
   return (
     <Router>
-      <ProtectedRoutes />
-      <PublicRoutes />
+      <Toaster position="top-right" />
+      {isAuthorized ? <ProtectedRoutes /> : <PublicRoutes />}
     </Router>
   );
 }

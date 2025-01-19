@@ -49,7 +49,7 @@ const LoginFormSchema = z.object({
 });
 
 const Login = () => {
-  const { setToken, setUser } = useAuth();
+  const { setUser } = useAuth();
   const loginMutation = useLogin();
   const navigate = useNavigate();
 
@@ -63,12 +63,12 @@ const Login = () => {
   });
 
   async function handleSubmit(data: ILogin) {
-    console.log(data);
-    // const response = await loginMutation.mutateAsync(data);
+    const response = await loginMutation.mutateAsync(data);
 
-    // if (response) {
-    // Todo
-    // }
+    if (response?.data) {
+      setUser(response.data);
+      navigate("/");
+    }
   }
 
   return (
