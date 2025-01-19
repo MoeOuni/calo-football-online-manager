@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import { ReactQueryProvider } from "./providers/react-query-provider.tsx";
 import { Suspense } from "react";
 import { LoaderCircle } from "lucide-react";
+import { AuthProvider } from "./providers/authentication-provider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <Suspense
@@ -13,8 +14,10 @@ createRoot(document.getElementById("root")!).render(
       </div>
     }
   >
-  <ReactQueryProvider>
-    <App />
-  </ReactQueryProvider>
+    <ReactQueryProvider>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </ReactQueryProvider>
   </Suspense>
 );
