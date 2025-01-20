@@ -1,10 +1,10 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import { ProtectedRoutes, PublicRoutes } from "./routes";
 import { Toaster } from "@/components/ui/sonner";
-import { isAuthorizationCookieSet } from "./lib/utils";
+import { useAuth } from "./providers/authentication-provider";
 
 function App() {
-  const isAuthorized = isAuthorizationCookieSet();
+  const {  isAuthorized } = useAuth();
 
   return (
     <Router>

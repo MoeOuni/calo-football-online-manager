@@ -49,7 +49,7 @@ const LoginFormSchema = z.object({
 });
 
 const Login = () => {
-  const { setUser } = useAuth();
+  const { setUser, setIsAuthorized } = useAuth();
   const loginMutation = useLogin();
   const navigate = useNavigate();
 
@@ -66,6 +66,7 @@ const Login = () => {
     const response = await loginMutation.mutateAsync(data);
 
     if (response?.data) {
+      setIsAuthorized(true);
       setUser(response.data);
       navigate("/");
     }
