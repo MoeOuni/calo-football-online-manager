@@ -43,7 +43,6 @@ export function ForgotPasswordForm({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
     mode: "onBlur",
   });
