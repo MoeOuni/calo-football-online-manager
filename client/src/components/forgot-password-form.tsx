@@ -32,10 +32,7 @@ const LoginFormSchema = z.object({
   email: z.string().email(),
 });
 
-export function ForgotPasswordForm({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+export function ForgotPasswordForm() {
   const forgotPwdMutation = useForgotPwd();
   const navigate = useNavigate();
 
@@ -56,7 +53,7 @@ export function ForgotPasswordForm({
     }
   }
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn("flex flex-col gap-6")} >
       <Card>
         <CardHeader className="text-center">
           <CardTitle className="text-xl">Forgot Password ?</CardTitle>
@@ -97,7 +94,7 @@ export function ForgotPasswordForm({
                   {forgotPwdMutation.isPending && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  Sign in
+                  Send Reset Link
                 </Button>
               </form>
             </Form>
