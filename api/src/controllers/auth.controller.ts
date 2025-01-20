@@ -4,6 +4,7 @@ import { RequestWithUser } from '@interfaces/auth.interface';
 import { IUser } from '@interfaces/users.interface';
 import { AuthService } from '@services/auth.service';
 import { MailService } from '@/services/mail.service';
+import { ORIGIN } from '@/config';
 
 export class AuthController {
   public auth = Container.get(AuthService);
@@ -16,7 +17,7 @@ export class AuthController {
       res.setHeader('Set-Cookie', [cookie]);
 
       if (createdNow) {
-        const mailer = new MailService(findUser, 'http://localhost:3000');
+        const mailer = new MailService(findUser, ORIGIN);
 
         await mailer.sendWelcome();
       }
@@ -43,5 +44,18 @@ export class AuthController {
     } catch (error) {
       next(error);
     }
+  };
+
+  public forgotPwd = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { email } = req.body;
+
+      const { restLink, user } = await this.auth.generatePasswordResetLink(email);
+
+      const mailer = new MailService(user, ORIGIN, {
+        restLink,
+      });
+      await mailer.sendRestPwd();
+    } catch (error) {}
   };
 }

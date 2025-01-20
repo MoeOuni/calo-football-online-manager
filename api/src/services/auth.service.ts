@@ -1,6 +1,6 @@
 import { sign } from 'jsonwebtoken';
 import { Service } from 'typedi';
-import { SECRET_KEY } from '@config';
+import { ORIGIN, SECRET_KEY } from '@config';
 import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { IUser } from '@interfaces/users.interface';
@@ -47,5 +47,15 @@ export class AuthService {
     if (!findUser) throw new HttpException(409, `User was not found.`);
 
     return findUser;
+  }
+
+  public async generatePasswordResetLink(email: string): Promise<{ restLink: string; user: IUser }> {
+    const findUser = await UserModel.findOne({ email });
+    if (!findUser) throw new HttpException(409, `User with email ${email} was not found.`);
+
+    const resetToken = findUser.createPasswordResetToken();
+    await findUser.save({ validateBeforeSave: false });
+
+    return { restLink: `${ORIGIN}/reset-password?token=${resetToken}`, user: findUser };
   }
 }

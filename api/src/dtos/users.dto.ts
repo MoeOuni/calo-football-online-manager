@@ -14,10 +14,7 @@ export class CreateUserDto {
   public password: string;
 }
 
-export class UpdateUserDto {
-  @IsString()
-  @IsNotEmpty()
-  @MinLength(9)
-  @MaxLength(32)
-  public password: string;
+export class ForgotEmailDto {
+  @IsEmail()
+  public email: string;
 }

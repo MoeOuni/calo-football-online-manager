@@ -61,8 +61,9 @@ export class MailService {
   public async sendWelcome() {
     await this.send('welcome', 'Welcome to the Calo Football Manager!');
   }
+
   public async sendRestPwd() {
-    await this.send('resetPassword', 'Your password reset token (valid for only 10 minutes)');
+    await this.send('resetPassword', 'Your password reset token (valid for only 1 hour)');
   }
 
   public async sendPwdChanged() {

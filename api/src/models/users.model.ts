@@ -21,6 +21,14 @@ const UserSchema: Schema = new Schema(
     image: {
       type: String,
     },
+    passwordResetToken: {
+      type: String,
+      select: false,
+    },
+    passwordResetExpires: {
+      type: String,
+      select: false,
+    },
   },
   {
     timestamps: true,
