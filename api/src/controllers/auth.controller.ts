@@ -3,6 +3,7 @@ import { Container } from 'typedi';
 import { RequestWithUser } from '@interfaces/auth.interface';
 import { IUser } from '@interfaces/users.interface';
 import { AuthService } from '@services/auth.service';
+import { MailService } from '@/services/mail.service';
 
 export class AuthController {
   public auth = Container.get(AuthService);
@@ -10,9 +11,16 @@ export class AuthController {
   public logIn = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userData: IUser = req.body;
-      const { cookie, findUser } = await this.auth.login(userData);
+      const { cookie, findUser, createdNow } = await this.auth.login(userData);
 
       res.setHeader('Set-Cookie', [cookie]);
+
+      if (createdNow) {
+        const mailer = new MailService(findUser, 'http://localhost:3000');
+
+        await mailer.sendWelcome();
+      }
+
       res.status(200).json({
         data: {
           ...findUser,

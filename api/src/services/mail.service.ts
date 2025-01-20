@@ -6,14 +6,13 @@ import nodemailer from 'nodemailer';
 
 import { IUser } from '@interfaces/users.interface';
 
-@Service()
 export class MailService {
   to: string;
   from: string;
   url: string;
   payload?: any;
 
-  constructor(user: IUser, url: string, payload?: any) {
+  public constructor(user: IUser, url: string, payload?: any) {
     this.to = user.email;
     this.url = url;
     this.from = `Calo Football manager <${MAIL_USER}>`;
@@ -21,21 +20,8 @@ export class MailService {
   }
 
   newTransport() {
-    // SendGrid Configuration on Production Environment
-    // if (process.env.NODE_ENV === "production") {
-    //   return nodemailer.createTransport({
-    //     service: "SendGrid",
-    //     auth: {
-    //       user: config.email.email,
-    //       pass: config.email.pass,
-    //     },
-    //   });
-    // }
-
     return nodemailer.createTransport({
-      host: MAIL_HOST,
-      port: MAIL_PORT,
-      secure: false,
+      service: 'gmail',
       auth: {
         user: MAIL_USER,
         pass: MAIL_PASS,
@@ -44,7 +30,7 @@ export class MailService {
   }
 
   // Send the actual email
-  async send(template: string, subject: string) {
+  public async send(template: string, subject: string) {
     try {
       // Render HTML based on the EJS template
       const templateFile = path.resolve(__dirname, `../templates/emails/${template}.ejs`);
@@ -72,7 +58,14 @@ export class MailService {
     }
   }
 
-  async sendWelcome() {
+  public async sendWelcome() {
     await this.send('welcome', 'Welcome to the Calo Football Manager!');
+  }
+  public async sendRestPwd() {
+    await this.send('resetPassword', 'Your password reset token (valid for only 10 minutes)');
+  }
+
+  public async sendPwdChanged() {
+    await this.send('passwordChanged', 'Your password has been changed');
   }
 }

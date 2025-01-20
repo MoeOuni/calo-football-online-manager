@@ -19,7 +19,7 @@ const createCookie = (tokenData: TokenData): string => {
 
 @Service()
 export class AuthService {
-  public async login(userData: IUser): Promise<{ cookie: string; findUser: IUser }> {
+  public async login(userData: IUser): Promise<{ cookie: string; findUser: IUser; createdNow: boolean }> {
     const findUser = await UserModel.findOne({ email: userData.email }).select('+password');
 
     if (!findUser) {
@@ -29,7 +29,7 @@ export class AuthService {
       const tokenData = createToken(newUser);
       const cookie = createCookie(tokenData);
 
-      return { cookie, findUser: newUser.toJSON() };
+      return { cookie, findUser: newUser.toJSON(), createdNow: true };
     }
 
     if (!(await findUser.correctPassword(userData.password, findUser.password))) {
@@ -39,7 +39,7 @@ export class AuthService {
     const tokenData = createToken(findUser);
     const cookie = createCookie(tokenData);
 
-    return { cookie, findUser: findUser.toJSON() };
+    return { cookie, findUser: findUser.toJSON(), createdNow: false };
   }
 
   public async logout(userData: IUser): Promise<IUser> {
