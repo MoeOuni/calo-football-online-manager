@@ -1,11 +1,10 @@
-import { hash, compare } from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { Service } from 'typedi';
 import { SECRET_KEY } from '@config';
 import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { IUser } from '@interfaces/users.interface';
-import { IUserWithMethods, UserModel } from '@models/users.model';
+import { UserModel } from '@models/users.model';
 
 const createToken = (user: IUser): TokenData => {
   const dataStoredInToken: DataStoredInToken = { _id: user._id };
