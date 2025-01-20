@@ -12,9 +12,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { ILogin } from "@/lib/interfaces";
-import { useLogin } from "@/api/auth";
-import { useAuth } from "@/providers/authentication-provider";
+import { IForgotPwd } from "@/lib/interfaces";
+import { useForgotPwd } from "@/api/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import {
@@ -26,34 +25,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { API_STATUS_CODES } from "@/lib/contants";
+import { toast } from "sonner";
 
 const LoginFormSchema = z.object({
   email: z.string().email(),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long" })
-    .max(32, { message: "Password must be at most 32 characters long" })
-    .regex(/[A-Z]/, {
-      message: "Password must contain at least one uppercase letter",
-    })
-    .regex(/[a-z]/, {
-      message: "Password must contain at least one lowercase letter",
-    })
-    .regex(/[0-9]/, { message: "Password must contain at least one number" })
-    .regex(/[^a-zA-Z0-9]/, {
-      message: "Password must contain at least one special character",
-    }),
 });
 
 export function ForgotPasswordForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const { setUser, setIsAuthorized } = useAuth();
-  const loginMutation = useLogin();
+  const forgotPwdMutation = useForgotPwd();
   const navigate = useNavigate();
 
-  const form = useForm<ILogin>({
+  const form = useForm<IForgotPwd>({
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
       email: "",
@@ -62,13 +48,12 @@ export function ForgotPasswordForm({
     mode: "onBlur",
   });
 
-  async function handleSubmit(data: ILogin) {
-    const response = await loginMutation.mutateAsync(data);
+  async function handleSubmit(data: IForgotPwd) {
+    const response = await forgotPwdMutation.mutateAsync(data);
 
-    if (response?.data) {
-      setIsAuthorized(true);
-      setUser(response.data);
-      navigate("/");
+    if (response?.status === API_STATUS_CODES.SUCCESS) {
+      navigate("/login");
+      toast.success(response.message);
     }
   }
   return (
@@ -95,7 +80,10 @@ export function ForgotPasswordForm({
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input {...field} disabled={loginMutation.isPending} />
+                        <Input
+                          {...field}
+                          disabled={forgotPwdMutation.isPending}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -105,9 +93,9 @@ export function ForgotPasswordForm({
                 <Button
                   className="w-full"
                   type="submit"
-                  disabled={loginMutation.isPending}
+                  disabled={forgotPwdMutation.isPending}
                 >
-                  {loginMutation.isPending && (
+                  {forgotPwdMutation.isPending && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
                   Sign in

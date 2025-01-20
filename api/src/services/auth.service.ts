@@ -49,13 +49,13 @@ export class AuthService {
     return findUser;
   }
 
-  public async generatePasswordResetLink(email: string): Promise<{ restLink: string; user: IUser }> {
+  public async generatePasswordResetLink(email: string): Promise<{ resetLink: string; user: IUser }> {
     const findUser = await UserModel.findOne({ email });
     if (!findUser) throw new HttpException(409, `User with email ${email} was not found.`);
 
     const resetToken = findUser.createPasswordResetToken();
     await findUser.save({ validateBeforeSave: false });
 
-    return { restLink: `${ORIGIN}/reset-password?token=${resetToken}`, user: findUser };
+    return { resetLink: `${ORIGIN}/reset-password?token=${resetToken}`, user: findUser };
   }
 }

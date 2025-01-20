@@ -50,12 +50,19 @@ export class AuthController {
     try {
       const { email } = req.body;
 
-      const { restLink, user } = await this.auth.generatePasswordResetLink(email);
+      const { resetLink, user } = await this.auth.generatePasswordResetLink(email);
 
       const mailer = new MailService(user, ORIGIN, {
-        restLink,
+        resetLink,
       });
       await mailer.sendRestPwd();
-    } catch (error) {}
+
+      res.status(200).json({
+        status: 'success',
+        message: "We've sent you an email with a link to reset your password.",
+      });
+    } catch (error) {
+      next(error);
+    }
   };
 }

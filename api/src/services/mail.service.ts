@@ -63,10 +63,10 @@ export class MailService {
   }
 
   public async sendRestPwd() {
-    await this.send('resetPassword', 'Your password reset token (valid for only 1 hour)');
+    await this.send('reset-password', 'Your password reset token (valid for only 1 hour)');
   }
 
   public async sendPwdChanged() {
-    await this.send('passwordChanged', 'Your password has been changed');
+    await this.send('password-changed', 'Your password has been changed');
   }
 }

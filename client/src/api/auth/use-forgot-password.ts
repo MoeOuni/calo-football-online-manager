@@ -7,7 +7,7 @@ export function useForgotPwd() {
   const queryClient = useQueryClient();
 
   const forgotPwdFn = async (payload: IForgotPwd) => {
-    const response = await apiClient.post("/forgot-password", { payload });
+    const response = await apiClient.post("/forgot-password", payload);
 
     return response.data;
   };
