@@ -43,8 +43,8 @@ export class AuthService {
   }
 
   public async logout(userData: IUser): Promise<IUser> {
-    const findUser: IUser = await UserModel.findOne({ email: userData.email, password: userData.password });
-    if (!findUser) throw new HttpException(409, `This email ${userData.email} was not found`);
+    const findUser: IUser = await UserModel.findById(userData._id);
+    if (!findUser) throw new HttpException(409, `User was not found.`);
 
     return findUser;
   }

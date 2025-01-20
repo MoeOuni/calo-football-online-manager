@@ -26,6 +26,7 @@ export class AuthController {
           ...findUser,
           password: null,
         },
+        status: 'success',
       });
     } catch (error) {
       next(error);
@@ -38,7 +39,7 @@ export class AuthController {
       const logOutUserData: IUser = await this.auth.logout(userData);
 
       res.setHeader('Set-Cookie', ['Authorization=; Max-age=0']);
-      res.status(200).json({ data: logOutUserData, message: 'logout' });
+      res.status(200).json({ status: 'success', message: 'Goodbye for now! We’ll be here when you come back.' });
     } catch (error) {
       next(error);
     }
