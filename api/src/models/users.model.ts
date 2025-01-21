@@ -21,6 +21,10 @@ const UserSchema: Schema = new Schema(
     image: {
       type: String,
     },
+    balance: {
+      type: Number,
+      default: 5000000,
+    },
     passwordResetToken: {
       type: String,
       select: false,
