@@ -5,6 +5,9 @@ import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 const MainLayout = lazy(() => import("@/layouts/main-layout"));
 
 const Home = lazy(() => import("@/pages/home"));
+const Market = lazy(() => import("@/pages/market"));
+const Members = lazy(() => import("@/pages/members"));
+const Teams = lazy(() => import("@/pages/teams"));
 
 const Login = lazy(() => import("@/pages/auth/login"));
 const ResetPassword = lazy(() => import("@/pages/auth/reset-password"));
@@ -56,7 +59,10 @@ const ProtectedRoutes = memo(() => {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="*" element={<Navigate to={"/"} />} /> 
+          <Route path="/market" element={<Market />} />
+          <Route path="/members" element={<Members />} />
+          <Route path="/teams" element={<Teams />} />
+          <Route path="*" element={<Navigate to={"/"} />} />
         </Route>
       </Routes>
     </Suspense>
