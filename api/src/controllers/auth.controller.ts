@@ -65,4 +65,33 @@ export class AuthController {
       next(error);
     }
   };
+
+  public resetPwd = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { token } = req.params;
+      const { password, passwordConfirm } = req.body;
+
+      const resetUser = await this.auth.resetPassword(token, password, passwordConfirm);
+
+      const ipAddress = req.ip;
+      const userAgent = req.get('User-Agent');
+      const mailer = new MailService(resetUser, ORIGIN, {
+        ipAddress,
+        userAgent,
+      });
+
+      await mailer.sendPwdChanged();
+
+      res.status(201).json({
+        resetUser: {
+          ...resetUser,
+          password: null,
+        },
+        status: 'success',
+        message: 'Your password has been reset successfully, login with your new password.',
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

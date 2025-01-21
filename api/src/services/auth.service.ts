@@ -5,6 +5,7 @@ import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { IUser } from '@interfaces/users.interface';
 import { UserModel } from '@models/users.model';
+import crypto from 'crypto';
 
 const createToken = (user: IUser): TokenData => {
   const dataStoredInToken: DataStoredInToken = { _id: user._id };
@@ -57,5 +58,27 @@ export class AuthService {
     await findUser.save({ validateBeforeSave: false });
 
     return { resetLink: `${ORIGIN}/reset-password?token=${resetToken}`, user: findUser };
+  }
+
+  public async resetPassword(token: string, password: string, passwordConfirm: string): Promise<IUser> {
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    const findUser = await UserModel.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: Date.now() },
+    }).select('+passwordResetToken +passwordConfirm +password +passwordResetExpires');
+
+    if (!findUser) throw new HttpException(409, 'Token is invalid or has expired.');
+
+    if (password !== passwordConfirm) throw new HttpException(409, 'Passwords do not match.');
+
+    findUser.password = password;
+    findUser.passwordConfirm = passwordConfirm;
+    findUser.passwordResetToken = undefined;
+    findUser.passwordResetExpires = undefined;
+
+    await findUser.save();
+
+    return findUser;
   }
 }
