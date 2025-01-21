@@ -68,7 +68,7 @@ export class AuthService {
       passwordResetExpires: { $gt: Date.now() },
     }).select('+passwordResetToken +passwordConfirm +password +passwordResetExpires');
 
-    if (!findUser) throw new HttpException(409, 'Token is invalid or has expired.');
+    if (!findUser) throw new HttpException(401, 'Token is invalid or has expired.');
 
     if (password !== passwordConfirm) throw new HttpException(409, 'Passwords do not match.');
 
