@@ -70,4 +70,4 @@ export interface IUserWithMethods extends IUser {
   createPasswordResetToken: () => string;
 }
 
-export const UserModel = model<IUserWithMethods & Document>('User', UserSchema);
+export const UserModel = model<IUserWithMethods & Document>('users', UserSchema);
