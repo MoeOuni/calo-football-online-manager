@@ -8,9 +8,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Users, BarChart3, User, Menu, Volleyball } from "lucide-react";
 
 const navItems = [
-  { name: "Teams", href: "/teams", icon: Users },
-  { name: "Members", href: "/members", icon: User },
-  { name: "Market", href: "/market", icon: BarChart3 },
+  { name: "Teams", to: "/teams", icon: Users },
+  { name: "Members", to: "/members", icon: User },
+  { name: "Market", to: "/market", icon: BarChart3 },
 ];
 
 export function Sidebar() {
@@ -43,11 +43,11 @@ export function Sidebar() {
             {navItems.map((item) => (
               <Link
                 key={item.name}
-                to={item.href}
+                to={item.to}
                 onClick={() => setOpen(false)}
                 className={cn(
                   "flex items-center gap-2 mx-3 px-1 py-1 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
-                  location.pathname === item.href
+                  location.pathname === item.to
                     ? "bg-accent text-accent-foreground"
                     : "text-muted-foreground"
                 )}

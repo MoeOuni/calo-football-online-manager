@@ -14,9 +14,9 @@ import { Sidebar } from "./sidebar";
 import { useAuth } from "@/providers/authentication-provider";
 
 const navItems = [
-  { name: "Teams", href: "/teams", icon: Users },
-  { name: "Members", href: "/members", icon: User },
-  { name: "Market", href: "/market", icon: BarChart3 },
+  { name: "Teams", to: "/teams", icon: Users },
+  { name: "Members", to: "/members", icon: User },
+  { name: "Market", to: "/market", icon: BarChart3 },
 ];
 
 export function Navbar() {
@@ -30,10 +30,10 @@ export function Navbar() {
         {navItems.map((item) => (
           <Link
             key={item.name}
-            to={item.href}
+            to={item.to}
             className={cn(
               "text-sm font-medium transition-colors hover:text-primary hidden md:flex",
-              location.pathname === item.href
+              location.pathname === item.to
                 ? "text-primary"
                 : "text-muted-foreground"
             )}
@@ -56,6 +56,12 @@ export function Navbar() {
                 <p className="text-sm font-medium leading-none">Manager</p>
                 <p className="text-xs leading-none text-muted-foreground">
                   {user?.email}
+                </p>
+                <p className="text-xs leading-none text-muted-foreground">
+                  Balance: {new Intl.NumberFormat("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(5000000)}
                 </p>
               </div>
             </DropdownMenuLabel>
