@@ -11,12 +11,6 @@ const TeamSchema: Schema = new Schema(
     image: {
       type: String,
     },
-    members: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'players',
-      },
-    ],
     status: {
       type: String,
       enum: ['complete', 'incomplete'],

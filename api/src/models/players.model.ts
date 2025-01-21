@@ -16,6 +16,10 @@ const PlayerSchema: Schema = new Schema(
       type: String,
       enum: ['Goalkeeper', 'Defender', 'Midfielder', 'Attacker'],
     },
+    teamId: {
+      type: Schema.Types.ObjectId,
+      ref: 'teams',
+    },
     upToSale: {
       type: Boolean,
       default: false,
