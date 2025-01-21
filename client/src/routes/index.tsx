@@ -6,8 +6,10 @@ const MainLayout = lazy(() => import("@/layouts/main-layout"));
 
 const Home = lazy(() => import("@/pages/home"));
 const Market = lazy(() => import("@/pages/market"));
-const Members = lazy(() => import("@/pages/members"));
+const Players = lazy(() => import("@/pages/players"));
 const Teams = lazy(() => import("@/pages/teams"));
+const TeamForm = lazy(() => import("@/pages/team-form"));
+const TeamsList = lazy(() => import("@/pages/teams-list"));
 
 const Login = lazy(() => import("@/pages/auth/login"));
 const ResetPassword = lazy(() => import("@/pages/auth/reset-password"));
@@ -59,9 +61,12 @@ const ProtectedRoutes = memo(() => {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="/market" element={<Market />} />
-          <Route path="/members" element={<Members />} />
-          <Route path="/teams" element={<Teams />} />
+          <Route path="market" element={<Market />} />
+          <Route path="players" element={<Players />} />
+          <Route path="teams" element={<Teams />}>
+            <Route index element={<TeamsList />} />
+            <Route path="save" element={<TeamForm />} />
+          </Route>
           <Route path="*" element={<Navigate to={"/"} />} />
         </Route>
       </Routes>

@@ -1,4 +1,6 @@
+import Footer from "@/components/footer";
 import { Navbar } from "@/components/navbar";
+
 import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
@@ -10,9 +12,14 @@ const MainLayout = () => {
             <Navbar />
           </div>
         </header>
-        <main className="flex-1 lg:px-11 md:px-6 px-3 py-4 lg:py-10 md:py-6">
+        <main className="flex-1 lg:mx-11 md:mx-6 mx-3 my-4 lg:my-10 md:my-6 ">
           <Outlet />
         </main>
+        <footer className="w-full border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="w-full flex h-14 items-center">
+            <Footer/>
+          </div>
+        </footer>
       </div>
     </div>
   );

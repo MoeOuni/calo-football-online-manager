@@ -9,7 +9,7 @@ import { Users, BarChart3, User, Menu, Volleyball } from "lucide-react";
 
 const navItems = [
   { name: "Teams", to: "/teams", icon: Users },
-  { name: "Members", to: "/members", icon: User },
+  { name: "Players", to: "/players", icon: User },
   { name: "Market", to: "/market", icon: BarChart3 },
 ];
 
