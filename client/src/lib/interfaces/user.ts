@@ -17,5 +17,5 @@ export interface IForgotPwd {
 
 export interface IResetPwd {
   password: string;
-  confirmPassword: string;
+  passwordConfirm: string;
 }

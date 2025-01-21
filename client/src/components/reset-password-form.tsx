@@ -13,8 +13,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { IResetPwd } from "@/lib/interfaces";
-import { useForgotPwd } from "@/api/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { useResetPwd } from "@/api/auth";
+import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import {
   Form,
@@ -41,15 +41,15 @@ const LoginFormSchema = z
         /[^a-zA-Z0-9]/,
         "Password must contain at least one special character"
       ),
-    confirmPassword: z.string(),
+    passwordConfirm: z.string(),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.passwordConfirm, {
     message: "Passwords don't match",
-    path: ["confirmPassword"],
+    path: ["passwordConfirm"],
   });
 
 export function ResetPasswordForm() {
-  const forgotPwdMutation = useForgotPwd();
+  const restPwdMutation = useResetPwd();
   const navigate = useNavigate();
 
   //   Todo create a query hook to check to token validation
@@ -58,19 +58,18 @@ export function ResetPasswordForm() {
     resolver: zodResolver(LoginFormSchema),
     defaultValues: {
       password: "",
-      confirmPassword: "",
+      passwordConfirm: "",
     },
     mode: "onBlur",
   });
 
   async function handleSubmit(data: IResetPwd) {
-    // const response = await forgotPwdMutation.mutateAsync(data);
+    const response = await restPwdMutation.mutateAsync(data);
 
-    toast.info("Great !");
-    // if (response?.status === API_STATUS_CODES.SUCCESS) {
-    //   navigate("/login");
-    //   toast.success(response.message);
-    // }
+    if (response?.status === API_STATUS_CODES.SUCCESS) {
+      navigate("/login");
+      toast.success(response.message);
+    }
   }
   return (
     <div className={cn("flex flex-col gap-6")}>
@@ -98,7 +97,7 @@ export function ResetPasswordForm() {
                       <FormControl>
                         <Input
                           {...field}
-                          disabled={forgotPwdMutation.isPending}
+                          disabled={restPwdMutation.isPending}
                           type="password"
                         />
                       </FormControl>
@@ -109,14 +108,14 @@ export function ResetPasswordForm() {
 
                 <FormField
                   control={form.control}
-                  name="confirmPassword"
+                  name="passwordConfirm"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Confirm Password</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          disabled={forgotPwdMutation.isPending}
+                          disabled={restPwdMutation.isPending}
                           type="password"
                         />
                       </FormControl>
@@ -128,9 +127,9 @@ export function ResetPasswordForm() {
                 <Button
                   className="w-full"
                   type="submit"
-                  disabled={forgotPwdMutation.isPending}
+                  disabled={restPwdMutation.isPending}
                 >
-                  {forgotPwdMutation.isPending && (
+                  {restPwdMutation.isPending && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
                   Reset
