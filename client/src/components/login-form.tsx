@@ -20,6 +20,7 @@ import { Loader2 } from "lucide-react";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -41,9 +42,10 @@ const LoginFormSchema = z.object({
       message: "Password must contain at least one lowercase letter",
     })
     .regex(/[0-9]/, { message: "Password must contain at least one number" })
-    .regex(/[^a-zA-Z0-9]/, {
-      message: "Password must contain at least one special character",
-    }),
+    .regex(
+      /[@$!%*?&]/,
+      "Password must contain at least one special character (@ $ ! % * ? &)"
+    ),
 });
 
 export function LoginForm() {
@@ -118,6 +120,11 @@ export function LoginForm() {
                           type="password"
                         />
                       </FormControl>
+                      <FormDescription>
+                        Password must be 8-32 characters long and include at
+                        least one uppercase letter, one lowercase letter, one
+                        number, and one special character (@ $ ! % * ? &).
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
