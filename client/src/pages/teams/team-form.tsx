@@ -26,8 +26,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { PlayerRole } from "@/lib/types";
-import { DEFAULT_PLAYERS, PLAYERS_ROLES } from "@/lib/contants";
-import { CircleX, Info, Pin, PlusCircle, Save, Trash2 } from "lucide-react";
+import {
+  API_STATUS_CODES,
+  DEFAULT_PLAYERS,
+  PLAYERS_ROLES,
+} from "@/lib/contants";
+import { Info, Pin, PlusCircle, Save, Trash2 } from "lucide-react";
 import { teamFormSchema, type TeamFormValues } from "@/lib/schemas";
 import {
   Table,
@@ -39,9 +43,16 @@ import {
 } from "@/components/ui/table";
 import { useMemo } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useCreateTeam } from "@/api/teams/use-create-team";
+import { toast as sonnerToast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 export default function TeamForm() {
   const { toast } = useToast();
+
+  const teamMutation = useCreateTeam();
+  const navigate = useNavigate();
+
   const form = useForm<TeamFormValues>({
     resolver: zodResolver(teamFormSchema),
     defaultValues: {
@@ -73,9 +84,14 @@ export default function TeamForm() {
 
   const getRoleCount = (role: PlayerRole) => roleCounts[role] || 0;
 
-  const onSubmit = (data: TeamFormValues) => {
-    console.log(data);
+  const onSubmit = async (data: TeamFormValues) => {
+    const response = await teamMutation.mutateAsync(data);
     // Handle form submission
+
+    if (response?.status === API_STATUS_CODES.SUCCESS) {
+      sonnerToast(response?.message);
+      navigate("/teams");
+    }
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -83,24 +99,24 @@ export default function TeamForm() {
     if (errors.players) {
       toast({
         title: "❌ Team Composition Error",
-        description: errors.players.root.message,
+        description: errors.players.message || errors.players.root.message,
       });
     }
   };
 
   return (
-    <div className="mx-auto p-4">
+    <div className="mx-auto md:p-4">
       <Card className="w-full">
-        <CardHeader>
+        <CardHeader className="p-3 md:p-6">
           <CardTitle>Create Your Team</CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-3 md:p-6">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit, onError)}
               className="space-y-4"
             >
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-8">
                 <div className="col-span-1 md:col-span-2">
                   <FormField
                     control={form.control}
@@ -109,7 +125,11 @@ export default function TeamForm() {
                       <FormItem>
                         <FormLabel>Team Name</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter team name" {...field} />
+                          <Input
+                            placeholder="Enter team name"
+                            disabled={teamMutation.isPending}
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                         <FormDescription>
@@ -158,10 +178,10 @@ export default function TeamForm() {
               </div>
 
               <Card>
-                <CardHeader>
+                <CardHeader className="p-3 md:p-6">
                   <CardTitle>Players</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-3 md:p-6">
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -189,6 +209,7 @@ export default function TeamForm() {
                                     <Input
                                       {...field}
                                       placeholder="Player name"
+                                      disabled={teamMutation.isPending}
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -205,6 +226,7 @@ export default function TeamForm() {
                                   <Select
                                     onValueChange={field.onChange}
                                     value={field.value}
+                                    disabled={teamMutation.isPending}
                                   >
                                     <FormControl>
                                       <SelectTrigger>
@@ -231,6 +253,7 @@ export default function TeamForm() {
                               variant="destructive"
                               onClick={() => remove(index)}
                               size="sm"
+                              disabled={teamMutation.isPending}
                             >
                               <Trash2 className="h-5" />
                             </Button>
@@ -240,11 +263,12 @@ export default function TeamForm() {
                     </TableBody>
                   </Table>
                 </CardContent>
-                <CardFooter className="justify-between border-t p-4 flex-wrap">
+                <CardFooter className="justify-between border-t p-3 md:p-6 flex-wrap">
                   <Button
                     size="sm"
                     type="button"
                     variant="ghost"
+                    disabled={teamMutation.isPending}
                     onClick={() => {
                       const availableRole = Object.entries(
                         DEFAULT_PLAYERS
@@ -268,12 +292,21 @@ export default function TeamForm() {
                     Add Player
                   </Button>
                   <div className="flex gap-2">
-                    <Button type="button" variant="outline" className="gap-1">
+                    <Button
+                      disabled={teamMutation.isPending}
+                      type="button"
+                      variant="outline"
+                      className="gap-1"
+                    >
                       <Pin className="h-4 w-4" />
                       <span className="hidden md:inline">Save Draft</span>
                     </Button>
 
-                    <Button type="submit" className="gap-1">
+                    <Button
+                      disabled={teamMutation.isPending}
+                      type="submit"
+                      className="gap-1"
+                    >
                       <Save className="h-4 w-4" />
                       <span className="hidden md:inline">Create Team</span>
                     </Button>

@@ -3,7 +3,7 @@
 // https://tkdodo.eu/blog/leveraging-the-query-function-context#query-key-factories
 
 export const teamsQueryKeys = {
-  all: ["auth"],
+  all: ["teams"],
   details: () => [...teamsQueryKeys.all, "detail"],
   detail: (id: string) => [...teamsQueryKeys.details(), id],
 };

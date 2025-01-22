@@ -13,7 +13,7 @@ const TeamSchema: Schema = new Schema(
     },
     status: {
       type: String,
-      enum: ['complete', 'incomplete'],
+      enum: ['complete', 'incomplete', 'draft'],
       default: 'incomplete',
     },
     userId: {
