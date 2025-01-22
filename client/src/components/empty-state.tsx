@@ -3,6 +3,7 @@ import { PlusCircle, UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export function EmptyPlayersState() {
+  const Navigate = useNavigate();
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] p-4 text-center ">
       <div className="w-20 h-20 mb-4">
@@ -26,9 +27,9 @@ export function EmptyPlayersState() {
         Start building your roster by adding your first player. Players are the
         heart of your team!
       </p>
-      <Button>
+      <Button onClick={() => Navigate("/teams/save")}>
         <UserPlus className="mr-2 h-4 w-4" />
-        Add New Player
+        Create New Team
       </Button>
     </div>
   );

@@ -7,9 +7,9 @@ const MainLayout = lazy(() => import("@/layouts/main-layout"));
 const Home = lazy(() => import("@/pages/home"));
 const Market = lazy(() => import("@/pages/market"));
 const Players = lazy(() => import("@/pages/players"));
-const Teams = lazy(() => import("@/pages/teams"));
-const TeamForm = lazy(() => import("@/pages/team-form"));
-const TeamsList = lazy(() => import("@/pages/teams-list"));
+const Teams = lazy(() => import("@/pages/teams/teams"));
+const TeamForm = lazy(() => import("@/pages/teams/team-form"));
+const TeamsList = lazy(() => import("@/pages/teams/teams-list"));
 
 const Login = lazy(() => import("@/pages/auth/login"));
 const ResetPassword = lazy(() => import("@/pages/auth/reset-password"));
