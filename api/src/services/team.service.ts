@@ -6,6 +6,7 @@ import { Service } from 'typedi';
 @Service()
 export class TeamService {
   public async createTeam(team: ITeam): Promise<ITeam> {
+    console.log(team);
     const newTeam = new TeamModel({ ...team });
 
     await newTeam.save();

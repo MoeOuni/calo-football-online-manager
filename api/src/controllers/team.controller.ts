@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { Container } from 'typedi';
 import { RequestWithUser } from '@interfaces/auth.interface';
 import { ITeam } from '@/interfaces/team.interface';
@@ -12,10 +12,10 @@ export class TeamController {
 
   public createTeam = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const { teamData, playersData } = req.body;
-      const newTeam: ITeam = await this.team.createTeam(teamData);
+      const { team, players } = req.body;
+      const newTeam: ITeam = await this.team.createTeam(team);
 
-      const playersBulkPayload = playersData.map((player: IPlayer) => ({ ...player, teamId: newTeam._id }));
+      const playersBulkPayload = players.map((player: IPlayer) => ({ ...player, teamId: newTeam._id }));
       const newPlayers: IPlayer[] = await this.player.bulkCreatePlayers(playersBulkPayload);
 
       res.status(201).json({

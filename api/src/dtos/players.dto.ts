@@ -2,12 +2,14 @@ import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'c
 
 export class PlayerDataDto {
   @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Player name should not be empty' })
   public name: string;
 
   @IsString()
-  @IsNotEmpty()
-  @IsEnum(['Goalkeeper', 'Defender', 'Midfielder', 'Attacker'])
+  @IsNotEmpty({ message: 'Player role should not be empty' })
+  @IsEnum(['Goalkeeper', 'Defender', 'Midfielder', 'Attacker'], {
+    message: "Player role should be 'Goalkeeper', 'Defender', 'Midfielder', or 'Attacker'",
+  })
   public role: string;
 
   @IsString()
