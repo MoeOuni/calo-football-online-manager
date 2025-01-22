@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -13,7 +14,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/select";
 import type { PlayerRole } from "@/lib/types";
 import { DEFAULT_PLAYERS, PLAYERS_ROLES } from "@/lib/contants";
-import { PlusCircle, Trash2 } from "lucide-react";
+import { CircleX, Info, Pin, PlusCircle, Save, Trash2 } from "lucide-react";
 import { teamFormSchema, type TeamFormValues } from "@/lib/schemas";
 import {
   Table,
@@ -38,8 +38,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useMemo } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function TeamForm() {
+  const { toast } = useToast();
   const form = useForm<TeamFormValues>({
     resolver: zodResolver(teamFormSchema),
     defaultValues: {
@@ -76,6 +78,16 @@ export default function TeamForm() {
     // Handle form submission
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onError = (errors: any) => {
+    if (errors.players) {
+      toast({
+        title: "❌ Team Composition Error",
+        description: errors.players.root.message,
+      });
+    }
+  };
+
   return (
     <div className="mx-auto p-4">
       <Card className="w-full">
@@ -84,7 +96,10 @@ export default function TeamForm() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={form.handleSubmit(onSubmit, onError)}
+              className="space-y-4"
+            >
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="col-span-1 md:col-span-2">
                   <FormField
@@ -97,6 +112,26 @@ export default function TeamForm() {
                           <Input placeholder="Enter team name" {...field} />
                         </FormControl>
                         <FormMessage />
+                        <FormDescription>
+                          Build your team by adding 15-25 players, adhering to
+                          the available roles.
+                          <ul className="my-3 ml-2 md:ml-6 [&>li]:mt-2">
+                            <li className="flex items-center space-x-2 cursor-help">
+                              <Info className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                              <span>
+                                You can save your progress as a draft and
+                                continue later.
+                              </span>
+                            </li>
+                            <li className="flex items-center space-x-2 cursor-help">
+                              <Info className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                              <span>
+                                Players obtained from the market will be
+                                eligible for team selection.
+                              </span>
+                            </li>
+                          </ul>
+                        </FormDescription>
                       </FormItem>
                     )}
                   />
@@ -104,7 +139,7 @@ export default function TeamForm() {
 
                 <div className="bg-muted/50 p-3 rounded-md border">
                   <h3 className="text-lg font-semibold mb-2">
-                    Team Composition
+                    Available Roles
                   </h3>
                   {Object.entries(DEFAULT_PLAYERS).map(
                     ([role, requiredCount]) => (
@@ -125,10 +160,6 @@ export default function TeamForm() {
               <Card>
                 <CardHeader>
                   <CardTitle>Players</CardTitle>
-                  <CardDescription>
-                    Add players to your team. Your team must contain 15-25
-                    players following the available Composition.
-                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Table>
@@ -209,11 +240,11 @@ export default function TeamForm() {
                     </TableBody>
                   </Table>
                 </CardContent>
-                <CardFooter className="justify-center border-t p-4">
+                <CardFooter className="justify-between border-t p-4 flex-wrap">
                   <Button
                     size="sm"
                     type="button"
-                    variant="outline"
+                    variant="ghost"
                     onClick={() => {
                       const availableRole = Object.entries(
                         DEFAULT_PLAYERS
@@ -236,12 +267,19 @@ export default function TeamForm() {
                     <PlusCircle className="h-4 w-4" />
                     Add Player
                   </Button>
+                  <div className="flex gap-2">
+                    <Button type="button" variant="outline" className="gap-1">
+                      <Pin className="h-4 w-4" />
+                      <span className="hidden md:inline">Save Draft</span>
+                    </Button>
+
+                    <Button type="submit" className="gap-1">
+                      <Save className="h-4 w-4" />
+                      <span className="hidden md:inline">Create Team</span>
+                    </Button>
+                  </div>
                 </CardFooter>
               </Card>
-
-              <Button type="submit" className="w-full">
-                Create Team
-              </Button>
             </form>
           </Form>
         </CardContent>
