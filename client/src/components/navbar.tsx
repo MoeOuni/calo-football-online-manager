@@ -58,10 +58,11 @@ export function Navbar() {
                   {user?.email}
                 </p>
                 <p className="text-xs leading-none text-muted-foreground">
-                  Balance: {new Intl.NumberFormat("en-US", {
+                  Balance:{" "}
+                  {new Intl.NumberFormat("en-US", {
                     style: "currency",
                     currency: "USD",
-                  }).format(5000000)}
+                  }).format(user?.balance ?? 0)}
                 </p>
               </div>
             </DropdownMenuLabel>
