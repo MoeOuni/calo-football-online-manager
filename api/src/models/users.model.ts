@@ -25,6 +25,24 @@ const UserSchema: Schema = new Schema(
       type: Number,
       default: 5000000,
     },
+    playersCountRight: {
+      goalkeeper: {
+        type: Number,
+        default: 3,
+      },
+      defender: {
+        type: Number,
+        default: 6,
+      },
+      midfielder: {
+        type: Number,
+        default: 6,
+      },
+      attacker: {
+        type: Number,
+        default: 5,
+      },
+    },
     passwordResetToken: {
       type: String,
       select: false,

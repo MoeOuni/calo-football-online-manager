@@ -24,7 +24,16 @@ export class AuthService {
     const findUser = await UserModel.findOne({ email: userData.email }).select('+password');
 
     if (!findUser) {
-      const newUser = new UserModel({ ...userData, balance: 5000000 });
+      const newUser = new UserModel({
+        ...userData,
+        balance: 5000000, // default balance
+        playersCountRight: {
+          goalkeeper: 3, // default goalkeepers
+          defender: 6, // default defenders
+          midfielder: 6, // default midfielders
+          attacker: 5, // default attackers
+        },
+      });
       await newUser.save();
 
       const tokenData = createToken(newUser);

@@ -9,4 +9,10 @@ export interface IUser {
   createdAt?: Date;
   updatedAt?: Date;
   image?: string;
+  playersCountRight?: {
+    goalkeeper: number;
+    defender: number;
+    midfielder: number;
+    attacker: number;
+  };
 }
