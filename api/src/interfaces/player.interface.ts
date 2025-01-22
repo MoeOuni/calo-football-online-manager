@@ -6,6 +6,7 @@ export interface IPlayer {
   image?: string;
   role: PlayerRole;
   teamId?: string;
+  userId?: string;
   upToSale?: boolean;
   saleValue?: number;
 }

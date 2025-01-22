@@ -20,6 +20,10 @@ const PlayerSchema: Schema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'teams',
     },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'users',
+    },
     upToSale: {
       type: Boolean,
       default: false,
