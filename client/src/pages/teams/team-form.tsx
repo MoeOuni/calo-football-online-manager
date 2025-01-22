@@ -31,7 +31,7 @@ import {
   DEFAULT_PLAYERS,
   PLAYERS_ROLES,
 } from "@/lib/contants";
-import { Info, Pin, PlusCircle, Save, Trash2 } from "lucide-react";
+import { Info, Loader2, Pin, PlusCircle, Save, Trash2 } from "lucide-react";
 import { teamFormSchema, type TeamFormValues } from "@/lib/schemas";
 import {
   Table,
@@ -107,8 +107,11 @@ export default function TeamForm() {
   return (
     <div className="mx-auto md:p-4">
       <Card className="w-full">
-        <CardHeader className="p-3 md:p-6">
+        <CardHeader className="p-3 md:p-6 flex justify-between flex-row items-center">
           <CardTitle>Create Your Team</CardTitle>
+          {teamMutation.isPending && (
+            <Loader2 className="h-5 w-5 animate-spin" />
+          )}
         </CardHeader>
         <CardContent className="p-3 md:p-6">
           <Form {...form}>
@@ -307,7 +310,11 @@ export default function TeamForm() {
                       type="submit"
                       className="gap-1"
                     >
-                      <Save className="h-4 w-4" />
+                      {teamMutation.isPending ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Save className="h-4 w-4" />
+                      )}
                       <span className="hidden md:inline">Create Team</span>
                     </Button>
                   </div>

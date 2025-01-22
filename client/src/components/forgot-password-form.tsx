@@ -92,7 +92,7 @@ export function ForgotPasswordForm() {
                   disabled={forgotPwdMutation.isPending}
                 >
                   {forgotPwdMutation.isPending && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-1 h-4 w-4 animate-spin" />
                   )}
                   Send Reset Link
                 </Button>

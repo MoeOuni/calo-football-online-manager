@@ -136,7 +136,7 @@ export function LoginForm() {
                   disabled={loginMutation.isPending}
                 >
                   {loginMutation.isPending && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-1 h-4 w-4 animate-spin" />
                   )}
                   Sign in
                 </Button>
