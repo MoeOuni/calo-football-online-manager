@@ -5,4 +5,5 @@ export interface ITeam {
   name: string;
   image?: string;
   status?: TeamStatus;
+  userId?: string;
 }

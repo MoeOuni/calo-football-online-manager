@@ -16,6 +16,10 @@ const TeamSchema: Schema = new Schema(
       enum: ['complete', 'incomplete'],
       default: 'incomplete',
     },
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: 'users',
+    },
   },
   {
     timestamps: true,
