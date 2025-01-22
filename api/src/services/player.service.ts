@@ -42,26 +42,26 @@ export class PlayerService {
     });
 
     const playersCount = {
-      [PLAYERS_ROLES.GOALKEEPER]: 0,
-      [PLAYERS_ROLES.DEFENDER]: 0,
-      [PLAYERS_ROLES.MIDFIELDER]: 0,
-      [PLAYERS_ROLES.ATTACKER]: 0,
+      [PLAYERS_ROLES.GOALKEEPER.toLowerCase()]: 0,
+      [PLAYERS_ROLES.DEFENDER.toLowerCase()]: 0,
+      [PLAYERS_ROLES.MIDFIELDER.toLowerCase()]: 0,
+      [PLAYERS_ROLES.ATTACKER.toLowerCase()]: 0,
     };
 
     // Count existing players roles
     existingPlayers.forEach(existingPlayer => {
-      playersCount[existingPlayer.role] += 1;
+      playersCount[existingPlayer.role.toLowerCase()] += 1;
     });
 
     // Count players roles
     players.forEach(player => {
-      playersCount[player.role] += 1;
+      playersCount[player.role.toLowerCase()] += 1;
     });
 
     // Check if the user has exceeded the limit players for each role
     Object.keys(playersCount).forEach(role => {
-      if (playersCount[role] > user.playersCountRight[role]) {
-        throw new HttpException(400, `You have exceeded the limit players for '${role}s'`);
+      if (playersCount[role.toLowerCase()] > user.playersCountRight[role.toLowerCase()]) {
+        throw new HttpException(400, `You have exceeded the players limit for '${role}s'`);
       }
     });
 
