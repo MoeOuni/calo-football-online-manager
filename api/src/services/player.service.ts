@@ -22,12 +22,6 @@ export class PlayerService {
     return newPlayers;
   }
 
-  public async getPlayers(): Promise<IPlayer[]> {
-    const players = await PlayerModel.find();
-
-    return players;
-  }
-
   public async getPlayerById(playerId: string): Promise<IPlayer> {
     const player = await PlayerModel.findById(playerId);
 
