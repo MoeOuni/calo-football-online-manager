@@ -1,0 +1,42 @@
+<body style="color: #111827; font-family: Arial, sans-serif; margin: 0; padding: 20px 0px">
+  <div
+    style="
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    "
+  >
+    <!-- Header -->
+    <div style="background-color: #16a34a; color: #ffffff; text-align: center; padding: 20px">
+      <h1 style="font-size: 24px; font-weight: bold; margin: 0; text-transform: uppercase"><%= subject %></h1>
+    </div>
+
+    <!-- Body Content -->
+    <div style="padding: 20px">
+      <p style="margin-top: 16px; font-size: 14px; line-height: 1.6">
+        Great news! Your player <strong><%= payload.playerName %></strong> has been successfully sold.
+      </p>
+      <p style="margin-top: 8px; font-size: 14px; line-height: 1.6">Sale Price: <strong>$<%= payload.price.toLocaleString() %> $</strong></p>
+      <p style="margin-top: 16px; font-size: 14px; line-height: 1.6">
+        The amount from this sale has been credited to your account. You can now use these funds to scout and purchase new players to strengthen your
+        squad.
+      </p>
+      <p style="margin-top: 16px; font-size: 14px; line-height: 1.6">
+        Reminder: only 95% of the sale price is credited to your account. The remaining 5% is deducted as a transaction fee.
+      </p>
+      <p style="margin-top: 16px; font-size: 14px; line-height: 1.6">
+        Thank you for using the transfer market to grow your team. If you have any questions or need assistance, our support team is here to help.
+      </p>
+    </div>
+
+    <!-- Footer -->
+    <div style="background-color: #e5e7eb; color: #374151; text-align: center; padding: 16px">
+      <p style="margin: 0; line-height: 1.6">Best regards,</p>
+      <p style="margin: 0; font-weight: bold; color: #16a34a">The Calo Football Online Manager Team</p>
+    </div>
+  </div>
+</body>

@@ -1,50 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="<%= cssFileUrl %>/public/favicon.ico" type="image/x-icon" />
-    <title><%= pageTitle %></title>
-  </head>
-  <body style="color: #111827; font-family: Arial, sans-serif; margin: 0; padding: 20px 0px;">
-    <div
-      style="
-        max-width: 600px;
-        margin: 20px auto;
-        background-color: #ffffff;
-        border-radius: 8px;
-        overflow: hidden;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      "
-    >
-      <!-- Header -->
-      <div style="background-color: #16a34a; color: #ffffff; text-align: center; padding: 20px;">
-        <h1 style="font-size: 24px; font-weight: bold; margin: 0; text-transform: uppercase;">Player Listed for Sale</h1>
-      </div>
-
-      <!-- Body Content -->
-      <div style="padding: 20px;">
-        <p style="margin-top: 16px; font-size: 14px; line-height: 1.6;">
-          Congratulations! Your player <strong><%= playerName %></strong> has been successfully listed for sale.
-        </p>
-        <p style="margin-top: 8px; font-size: 14px; line-height: 1.6;">
-          Listed Price: <strong>$<%= price.toLocaleString() %></strong>
-        </p>
-        <p style="margin-top: 16px; font-size: 14px; line-height: 1.6;">
-          Buyers can now view your player on the transfer market. Keep an eye on your offers and make strategic decisions to maximize your gains!
-        </p>
-        <p style="margin-top: 16px; font-size: 14px; line-height: 1.6;">
-          If you have any questions, feel free to reach out to our support team.
-        </p>
-      </div>
-
-      <!-- Footer -->
-      <div style="background-color: #e5e7eb; color: #374151; text-align: center; padding: 16px;">
-        <p style="margin: 0; line-height: 1.6;">Best regards,</p>
-        <p style="margin: 0; font-weight: bold; color: #16a34a;">The Calo Football Online Manager Team</p>
-      </div>
+<body style="color: #111827; font-family: Arial, sans-serif; margin: 0; padding: 20px 0px">
+  <div
+    style="
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    "
+  >
+    <div style="background-color: #16a34a; color: #ffffff; text-align: center; padding: 20px">
+      <h1 style="font-size: 24px; font-weight: bold; margin: 0; text-transform: uppercase"><%= subject %></h1>
     </div>
-  </body>
-</html>
+
+    <div style="padding: 20px">
+      <p style="margin-top: 16px; font-size: 14px; line-height: 1.6">
+        Congratulations! Your player <strong><%= payload.playerName %></strong> has been successfully listed for sale.
+      </p>
+      <p style="margin-top: 8px; font-size: 14px; line-height: 1.6">Listed Price: <strong>$<%= payload.price.toLocaleString() %> $</strong></p>
+      <p style="margin-top: 16px; font-size: 14px; line-height: 1.6">Buyers can now view your player on the transfer market.</p>
+      <p style="margin-top: 16px; font-size: 14px; line-height: 1.6">If you have any questions, feel free to reach out to our support team.</p>
+    </div>
+
+    <div style="background-color: #e5e7eb; color: #374151; text-align: center; padding: 16px">
+      <p style="margin: 0; line-height: 1.6">Best regards,</p>
+      <p style="margin: 0; font-weight: bold; color: #16a34a">The Calo Football Online Manager Team</p>
+    </div>
+  </div>
+</body>

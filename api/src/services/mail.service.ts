@@ -69,4 +69,20 @@ export class MailService {
   public async sendPwdChanged() {
     await this.send('password-changed', 'Your password has been changed');
   }
+
+  public async sendPlayerListedToSale() {
+    await this.send('list-player-to-sale', 'Player Listed for Sale');
+  }
+
+  public async sendPlayerRemovedFromSale() {
+    await this.send('remove-player-from-sale', 'Player Removed from Sale');
+  }
+
+  public async sendPurchasePlayerBuyer() {
+    await this.send('purchase-player-buyer', 'Player Purchase Successful');
+  }
+
+  public async sendPurchasePlayerSeller() {
+    await this.send('purchase-player-seller', 'Player Sold Successfully');
+  }
 }
