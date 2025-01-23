@@ -141,8 +141,8 @@ export class PlayerService {
     buyerUser.balance -= player.saleValue;
     buyerUser.playersCountRight[player.role.toLowerCase()] += 1;
 
-    // Update seller balance and playersCountRight
-    sellerUser.balance += player.saleValue;
+    // Update seller balance (95% of the original price) and playersCountRight
+    sellerUser.balance += player.saleValue * 0.95;
     sellerUser.playersCountRight[player.role.toLowerCase()] -= 1;
 
     // Update player
@@ -150,6 +150,7 @@ export class PlayerService {
     player.upToSale = false;
     player.saleValue = 0;
 
+    // Save Changes
     await buyerUser.save();
     await sellerUser.save();
     await player.save();
