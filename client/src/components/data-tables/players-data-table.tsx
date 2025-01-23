@@ -3,9 +3,6 @@
 import * as React from "react";
 import {
   ColumnDef,
-  ColumnFiltersState,
-  SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -45,6 +42,7 @@ import {
 import { PLAYERS_ROLES } from "@/lib/contants";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import PlayersActionMenu from "./players-action-menu";
+import { Badge } from "../ui/badge";
 
 export const columns: ColumnDef<IPlayerPopulated>[] = [
   {
@@ -74,6 +72,15 @@ export const columns: ColumnDef<IPlayerPopulated>[] = [
     header: "Team",
     cell: ({ row }) => (
       <div className="capitalize">{row.original?.teamId?.name}</div>
+    ),
+  },
+  {
+    accessorKey: "upToSale",
+    header: "Status",
+    cell: ({ row }) => (
+      <Badge variant={row.original?.upToSale ? "default" : "secondary"}>
+        {row.original?.upToSale ? "Up for sale" : "Not for sale"}
+      </Badge>
     ),
   },
   {

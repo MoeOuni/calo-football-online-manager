@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiClient, playersQueryKeys, factoryQueryKeys } from "@/api";
+import { apiClient, factoryQueryKeys } from "@/api";
 import { TSFixMe } from "@/lib/interfaces";
 import { type PriceFormValues } from "@/lib/schemas";
 import { toast } from "sonner";
@@ -17,10 +17,7 @@ export function useListPlayerSale() {
     mutationFn: listPlayerSaleFn,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: playersQueryKeys.all,
-      });
-      queryClient.invalidateQueries({
-        queryKey: factoryQueryKeys.teams,
+        queryKey: factoryQueryKeys.all,
       });
     },
     onError: (error: TSFixMe) => {
