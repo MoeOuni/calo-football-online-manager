@@ -7,6 +7,7 @@ import { AuthProvider } from "./providers/authentication-provider.tsx";
 import "./index.css";
 import App from "./App.tsx";
 import { UserProvider } from "./providers/user-provider.tsx";
+import { ThemeProvider } from "./providers/theme-provider.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <Suspense
@@ -16,12 +17,14 @@ createRoot(document.getElementById("root")!).render(
       </div>
     }
   >
-    <ReactQueryProvider>
-      <AuthProvider>
-        <UserProvider>
-          <App />
-        </UserProvider>
-      </AuthProvider>
-    </ReactQueryProvider>
+    <ThemeProvider defaultTheme="system" storageKey="x-ui-theme">
+      <ReactQueryProvider>
+        <AuthProvider>
+          <UserProvider>
+            <App />
+          </UserProvider>
+        </AuthProvider>
+      </ReactQueryProvider>
+    </ThemeProvider>
   </Suspense>
 );

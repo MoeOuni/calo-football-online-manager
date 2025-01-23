@@ -12,6 +12,7 @@ import {
 import { Users, UserCircle, BarChart3, User } from "lucide-react";
 import { Sidebar } from "./sidebar";
 import { useAuth } from "@/providers/authentication-provider";
+import { ModeToggle } from "./mode-toggle";
 
 const navItems = [
   { name: "Teams", to: "/teams", icon: Users },
@@ -43,11 +44,12 @@ export function Navbar() {
           </Link>
         ))}
       </div>
-      <div className="ml-auto">
+      <div className="ml-auto space-x-2">
+        <ModeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-              <UserCircle className="h-6 w-6" />
+            <Button variant="ghost" size={"icon"} className="h-8 w-8 rounded-full">
+              <UserCircle className="h-[1.2rem] w-[1.2rem]" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end" forceMount>

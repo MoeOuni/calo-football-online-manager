@@ -12,7 +12,7 @@ export class FactoryController {
     try {
       const teams = await this.teamsFactory.getAll(req);
 
-      res.status(200).json({ data: teams });
+      res.status(200).json(teams);
     } catch (error) {
       next(error);
     }
@@ -21,9 +21,12 @@ export class FactoryController {
   public getPlayers = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       req.query = { ...req.query, userId: req.user._id };
-      const players = await this.playersFactory.getAll(req);
+      const players = await this.playersFactory.getAllPopulated(req, {
+        path: 'teamId',
+        select: 'name',
+      });
 
-      res.status(200).json({ data: players });
+      res.status(200).json(players);
     } catch (error) {
       next(error);
     }
@@ -34,7 +37,7 @@ export class FactoryController {
 
     const players = await this.playersFactory.getAll(req);
 
-    res.status(200).json({ data: players });
+    res.status(200).json(players);
   };
 
   public getAvailablePlayersComposition = async (req: RequestWithUser, res: Response, next: NextFunction) => {
@@ -42,7 +45,7 @@ export class FactoryController {
       const user = req.user;
       const availablePlayers = await this.playersFactory.getAvailablePlayers(user);
 
-      res.status(200).json({ data: availablePlayers });
+      res.status(200).json(availablePlayers);
     } catch (error) {
       next(error);
     }
