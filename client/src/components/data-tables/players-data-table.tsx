@@ -44,6 +44,7 @@ import {
 } from "../ui/select";
 import { PLAYERS_ROLES } from "@/lib/contants";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import PlayersActionMenu from "./players-action-menu";
 
 export const columns: ColumnDef<IPlayerPopulated>[] = [
   {
@@ -75,6 +76,11 @@ export const columns: ColumnDef<IPlayerPopulated>[] = [
       <div className="capitalize">{row.original?.teamId?.name}</div>
     ),
   },
+  {
+    id: "actions",
+    enableHiding: false,
+    cell: ({ row }) => <PlayersActionMenu record={row.original} />,
+  },
 ];
 
 type PlayersDataTableProps = {
@@ -83,31 +89,14 @@ type PlayersDataTableProps = {
 };
 
 export function PlayersDataTable({ data, loading }: PlayersDataTableProps) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
-
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
+    state: {},
   });
 
   return (

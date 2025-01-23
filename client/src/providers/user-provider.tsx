@@ -46,7 +46,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (compositionQuery.isSuccess) {
-      setComposition(compositionQuery.data.data);
+      setComposition(compositionQuery.data);
     }
   }, [compositionQuery.isSuccess, setComposition, compositionQuery.data]);
 
