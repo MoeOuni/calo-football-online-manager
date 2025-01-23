@@ -7,5 +7,8 @@ export const factoryQueryKeys = {
   details: () => [...factoryQueryKeys.all, "detail"],
   composition: () => [...factoryQueryKeys.all, "composition"],
   teams: () => [...factoryQueryKeys.all, "teams"],
+  meTeams: () => [...factoryQueryKeys.all, "me-teams"],
+  players: () => [...factoryQueryKeys.all, "players"],
+  marketPlayers: () => [...factoryQueryKeys.all, "market-players"],
   detail: (id: string) => [...factoryQueryKeys.details(), id],
 };
