@@ -3,6 +3,7 @@ import { ProtectedRoutes, PublicRoutes } from "./routes";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnarToaster } from "@/components/ui/sonner";
 import { useAuth } from "./providers/authentication-provider";
+import { TooltipProvider } from "./components/ui/tooltip";
 
 function App() {
   const { isAuthorized } = useAuth();
@@ -11,7 +12,9 @@ function App() {
     <Router>
       <Toaster />
       <SonnarToaster position="top-right" />
-      {isAuthorized ? <ProtectedRoutes /> : <PublicRoutes />}
+      <TooltipProvider>
+        {isAuthorized ? <ProtectedRoutes /> : <PublicRoutes />}
+      </TooltipProvider>
     </Router>
   );
 }
