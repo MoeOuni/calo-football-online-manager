@@ -1,7 +1,7 @@
 import { PlayerRole } from "../types";
 
 export interface Player {
-  _id?: string;
+  _id: string;
   name: string;
   role: PlayerRole;
   userId?: string;

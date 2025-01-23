@@ -24,7 +24,11 @@ export class PlayerController {
 
   public removePlayerFromMarket = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
-      const { playerId } = req.body;
+      const { playerId } = req.params;
+
+      if (!playerId) {
+        throw new Error('Player ID is required');
+      }
 
       const player = await this.player.removePlayerFromMarket(playerId, req.user);
 

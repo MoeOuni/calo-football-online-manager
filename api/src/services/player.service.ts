@@ -74,13 +74,16 @@ export class PlayerService {
 
     if (!player) throw new HttpException(404, 'Player not found');
 
+    if (player.upToSale) throw new HttpException(400, 'Player is already listed for sale');
+
     if (player.userId.toString() !== user._id.toString()) {
       throw new HttpException(403, 'You are not authorized to list this player for sale');
     }
 
-    // Get the length of the players of the team.
-    const teamCount = await PlayerModel.find({ teamId: player.teamId }).countDocuments();
+    // Get the length of the players of the team and that are not upToSale.
+    const teamCount = await PlayerModel.find({ teamId: player.teamId, upToSale: false }).countDocuments();
 
+    // Check if the team has exactly 15 players that are not upToSale.
     if (teamCount - 1 < 15) {
       throw new HttpException(400, `You can't list a player for sale if your team has exactly 15 players`);
     }
@@ -106,6 +109,8 @@ export class PlayerService {
     const player = await PlayerModel.findById(playerId);
 
     if (!player) throw new HttpException(404, 'Player not found');
+
+    if (!player.upToSale) throw new HttpException(400, 'Player is not listed for sale');
 
     if (player.userId.toString() !== user._id.toString()) {
       throw new HttpException(403, 'You are not authorized to remove this player from sale');
