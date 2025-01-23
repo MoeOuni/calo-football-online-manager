@@ -1,6 +1,7 @@
 import { usePlayer } from "@/api";
 import { PlayersDataTable } from "@/components/data-tables/players-data-table";
 import { EmptyPlayersState } from "@/components/empty-state";
+import HistoryButton from "@/components/history-button";
 import { Card, CardContent } from "@/components/ui/card";
 import { LoaderCircle } from "lucide-react";
 
@@ -16,7 +17,7 @@ const Players = () => {
       ) : (
         <>
           {players?.data?.length !== 0 && (
-            <h2 className="text-2xl font-bold">Players List</h2>
+            <h2 className="text-2xl font-bold"><HistoryButton /> Players List</h2>
           )}
           {players?.data?.length === 0 ? (
             <EmptyPlayersState />

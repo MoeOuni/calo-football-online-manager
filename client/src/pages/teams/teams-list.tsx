@@ -16,6 +16,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { ITeam } from "@/lib/interfaces/team";
 import { IPlayerComposition } from "@/lib/interfaces";
+import HistoryButton from "@/components/history-button";
 
 interface TeamItem extends ITeam {
   composition: IPlayerComposition;
@@ -35,7 +36,7 @@ export default function TeamsList() {
         <>
           {teams?.data?.length !== 0 && (
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold">Team List</h2>
+              <h2 className="text-2xl font-bold"><HistoryButton /> Team List</h2>
               <Button
                 variant="default"
                 size="sm"

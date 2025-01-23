@@ -43,6 +43,7 @@ import { useCreateTeam } from "@/api/teams/use-create-team";
 import { toast as sonnerToast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/providers/user-provider";
+import HistoryButton from "@/components/history-button";
 
 export default function TeamForm() {
   const { toast } = useToast();
@@ -102,14 +103,16 @@ export default function TeamForm() {
   };
 
   return (
-    <div className="mx-auto md:p-4">
-      <Card className="w-full">
-        <CardHeader className="p-3 md:p-6 flex justify-between flex-row items-center">
-          <CardTitle>Create Your Team</CardTitle>
-          {teamMutation.isPending && (
+    <div className="mx-auto ">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold">
+          <HistoryButton /> Create Your Team
+        </h2>
+        {teamMutation.isPending && (
             <Loader2 className="h-5 w-5 animate-spin" />
           )}
-        </CardHeader>
+      </div>
+      <Card className="w-full">
         <CardContent className="p-3 md:p-6">
           <Form {...form}>
             <form
