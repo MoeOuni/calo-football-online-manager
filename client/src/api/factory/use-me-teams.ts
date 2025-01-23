@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 export function useMeTeams() {
   const getMeTeamsFn = async () => {
-    const response = await apiClient.get("/factory/me-teams");
+    const response = await apiClient.get("/teams/me");
     return response.data;
   };
 

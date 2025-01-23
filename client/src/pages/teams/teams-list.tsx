@@ -1,63 +1,125 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Player } from "@/lib/interfaces";
 import { EmptyTeamsState } from "@/components/empty-state";
+import { useMeTeams } from "@/api";
+import { LoaderCircle, Pencil, PlusCircle, ReceiptText } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { useNavigate } from "react-router-dom";
+import { ITeam } from "@/lib/interfaces/team";
+import { IPlayerComposition } from "@/lib/interfaces";
 
-interface Team {
-  id: number;
-  name: string;
-  players: Player[];
+interface TeamItem extends ITeam {
+  composition: IPlayerComposition;
 }
 
 export default function TeamsList() {
-  const teams: Team[] = [];
+  const teams = useMeTeams();
+  const navigate = useNavigate();
+
   return (
     <div className="space-y-4">
-      {teams?.length !== 0 && <h2 className="text-2xl font-bold">Team List</h2>}
-      {teams?.length === 0 ? (
-        <EmptyTeamsState />
+      {teams.isLoading ? (
+        <div className="flex justify-center items-center h-full">
+          <LoaderCircle className="mr-2 h-6 w-6 animate-spin" />
+        </div>
       ) : (
-        teams?.map((team) => (
-          <Card key={team.id}>
-            <CardHeader>
-              <CardTitle>{team.name}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary">
-                    Goalkeepers:{" "}
-                    {team.players.filter((p) => p.role === "goalkeeper").length}
-                  </Badge>
-                  <Badge variant="secondary">
-                    Defenders:{" "}
-                    {team.players.filter((p) => p.role === "defender").length}
-                  </Badge>
-                  <Badge variant="secondary">
-                    Midfielders:{" "}
-                    {team.players.filter((p) => p.role === "midfielder").length}
-                  </Badge>
-                  <Badge variant="secondary">
-                    Attackers:{" "}
-                    {team.players.filter((p) => p.role === "attacker").length}
-                  </Badge>
-                </div>
-                <details>
-                  <summary className="cursor-pointer font-semibold">
-                    View Players
-                  </summary>
-                  <ul className="mt-2 space-y-1">
-                    {team.players.map((player) => (
-                      <li key={player.id}>
-                        {player.name} - {player.role}
-                      </li>
-                    ))}
-                  </ul>
-                </details>
-              </div>
-            </CardContent>
-          </Card>
-        ))
+        <>
+          {teams?.data?.length !== 0 && (
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold">Team List</h2>
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => navigate("/teams/save")}
+              >
+                <PlusCircle className="h-4 w-4" />
+                <span className="hidden md:inline">Create New Team</span>
+              </Button>
+            </div>
+          )}
+          {teams?.data?.length === 0 ? (
+            <EmptyTeamsState />
+          ) : (
+            <>
+              {teams?.data?.map((team: TeamItem, index: number) => (
+                <Card key={index} className="shadow-md">
+                  <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                      <span>{team.name}</span>
+                      {team.status === "draft" && (
+                        <Badge variant="secondary" className="ml-2">
+                          Draft
+                        </Badge>
+                      )}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Last update:{" "}
+                      {team?.updatedAt &&
+                        formatDistanceToNow(new Date(team.updatedAt), {
+                          addSuffix: true,
+                        })}
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Team composition:
+                    </p>
+                    <Table className="mb-4">
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Position</TableHead>
+                          <TableHead>Count</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {Object.entries(team.composition).map(
+                          ([position, count]) => (
+                            <TableRow key={position}>
+                              <TableCell className="capitalize">
+                                {position}
+                              </TableCell>
+                              <TableCell>{count as number} Player(s)</TableCell>
+                            </TableRow>
+                          )
+                        )}
+                      </TableBody>
+                    </Table>
+
+                    <div className="flex justify-between">
+                      <Button variant="outline" size="sm">
+                        <ReceiptText className="h-4 w-4" />
+                        Details
+                      </Button>
+                      <Button
+                        variant="default"
+                        size="sm"
+                        onClick={() =>
+                          navigate(
+                            team.status === "draft"
+                              ? `/teams/save?draft=${team._id}`
+                              : `/teams/save/${team._id}`
+                          )
+                        }
+                      >
+                        <Pencil className="h-4 w-4" />
+                        {team.status === "draft" ? "Continue" : "Update"}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </>
+          )}
+        </>
       )}
     </div>
   );

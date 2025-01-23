@@ -14,7 +14,7 @@ const PlayerSchema: Schema = new Schema(
     },
     role: {
       type: String,
-      enum: ['goalkeeper', 'defender', 'midfielder', 'Attacker'],
+      enum: ['goalkeeper', 'Defender', 'Midfielder', 'Attacker'],
     },
     teamId: {
       type: Schema.Types.ObjectId,

@@ -35,4 +35,14 @@ export class TeamController {
       next(error);
     }
   };
+
+  public getMeTeams = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const teams = await this.team.getMeTeam(req.user._id);
+
+      res.status(200).json(teams);
+    } catch (error) {
+      next(error);
+    }
+  };
 }

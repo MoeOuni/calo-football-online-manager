@@ -20,4 +20,71 @@ export class TeamService {
 
     return team;
   }
+
+  public async getMeTeam(userId: string) {
+    const teams = await TeamModel.aggregate([
+      {
+        $match: {
+          userId,
+        },
+      },
+      {
+        $lookup: {
+          from: 'players',
+          localField: '_id',
+          foreignField: 'teamId',
+          as: 'players',
+        },
+      },
+      {
+        $addFields: {
+          composition: {
+            goalkeeper: {
+              $size: {
+                $filter: {
+                  input: '$players',
+                  as: 'player',
+                  cond: { $eq: ['$$player.role', 'goalkeeper'] },
+                },
+              },
+            },
+            defender: {
+              $size: {
+                $filter: {
+                  input: '$players',
+                  as: 'player',
+                  cond: { $eq: ['$$player.role', 'defender'] },
+                },
+              },
+            },
+            midfielder: {
+              $size: {
+                $filter: {
+                  input: '$players',
+                  as: 'player',
+                  cond: { $eq: ['$$player.role', 'midfielder'] },
+                },
+              },
+            },
+            attacker: {
+              $size: {
+                $filter: {
+                  input: '$players',
+                  as: 'player',
+                  cond: { $eq: ['$$player.role', 'attacker'] },
+                },
+              },
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          players: 0, // Exclude the players array from the final output
+        },
+      },
+    ]);
+
+    return teams;
+  }
 }

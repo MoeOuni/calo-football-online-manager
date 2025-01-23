@@ -13,8 +13,8 @@ const TeamSchema: Schema = new Schema(
     },
     status: {
       type: String,
-      enum: ['complete', 'incomplete', 'draft'],
-      default: 'incomplete',
+      enum: ['complete', 'draft'],
+      default: 'complete',
     },
     userId: {
       type: Schema.Types.ObjectId,

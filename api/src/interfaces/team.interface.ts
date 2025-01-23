@@ -1,4 +1,4 @@
-export type TeamStatus = 'complete' | 'incomplete';
+export type TeamStatus = 'complete' | 'draft';
 
 export interface ITeam {
   _id?: string;

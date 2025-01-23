@@ -18,5 +18,6 @@ export class TeamRoute implements Routes {
     // All routes in this path are protected by the AuthMiddleware (Requires the user to be logged in)
     this.router.use(AuthMiddleware);
     this.router.post(`${this.path}`, ValidationMiddleware(CreateTeamDto), this.team.createTeam);
+    this.router.get(`${this.path}/me`, this.team.getMeTeams);
   }
 }
