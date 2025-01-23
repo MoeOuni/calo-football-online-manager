@@ -9,12 +9,10 @@ import { IUser } from '@interfaces/users.interface';
 export class MailService {
   to: string;
   from: string;
-  url: string;
   payload?: any;
 
-  public constructor(user: IUser, url: string, payload?: any) {
+  public constructor(user: IUser, payload?: any) {
     this.to = user.email;
-    this.url = url;
     this.from = `Calo Football manager <${MAIL_USER}>`;
     this.payload = payload;
   }
@@ -36,7 +34,6 @@ export class MailService {
       const templateFile = path.resolve(__dirname, `../templates/emails/${template}.ejs`);
       const html = await ejs.renderFile(templateFile, {
         subject: contentSubject || subject,
-        cssFileUrl: this.url,
         pageTitle: contentSubject || subject,
         payload: this.payload,
       });

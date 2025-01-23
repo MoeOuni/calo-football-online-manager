@@ -7,6 +7,7 @@ import { UserModel } from '@/models/users.model';
 import { PLAYERS_ROLES } from '@/utils/constants';
 import { Service } from 'typedi';
 import { LogService } from './log.service';
+import { MailService } from './mail.service';
 
 @Service()
 export class PlayerService {
@@ -92,6 +93,12 @@ export class PlayerService {
     // Save Log
     await new LogService().createLog(user?._id, `Listed player ${player.name} for sale for ${price}`);
 
+    // Send Email
+    await new MailService(user, {
+      playerName: player.name,
+      price: price,
+    }).sendPlayerListedToSale();
+
     return player.toJSON() as IPlayer;
   }
 
@@ -111,6 +118,11 @@ export class PlayerService {
 
     // Save Log
     await new LogService().createLog(user?._id, `Removed player ${player.name} from sale`);
+
+    // Send Email
+    await new MailService(user, {
+      playerName: player.name,
+    }).sendPlayerRemovedFromSale();
 
     return player.toJSON() as IPlayer;
   }
@@ -145,19 +157,30 @@ export class PlayerService {
     sellerUser.balance += player.saleValue * 0.95;
     sellerUser.playersCountRight[player.role.toLowerCase()] -= 1;
 
-    // Update player
-    player.userId = buyerUser._id;
-    player.upToSale = false;
-    player.saleValue = 0;
-
     // Save Changes
     await buyerUser.save();
     await sellerUser.save();
-    await player.save();
 
     // Save Logs
     await new LogService().createLog(user?._id, `Purchased player ${player.name} for ${player.saleValue}`);
     await new LogService().createLog(sellerUser?._id, `Sold player ${player.name} for ${player.saleValue}`);
+
+    // Send Emails
+    await new MailService(sellerUser, {
+      playerName: player.name,
+      price: player.saleValue * 0.95,
+    }).sendPurchasePlayerSeller();
+
+    await new MailService(buyerUser, {
+      playerName: player.name,
+      price: player.saleValue,
+    });
+
+    // Update player
+    player.userId = buyerUser._id;
+    player.upToSale = false;
+    player.saleValue = 0;
+    await player.save();
 
     return player.toJSON() as IPlayer;
   }
