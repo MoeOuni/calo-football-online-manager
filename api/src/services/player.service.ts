@@ -3,8 +3,10 @@ import { IPlayer } from '@/interfaces/player.interface';
 import { IUser } from '@/interfaces/users.interface';
 import { PlayerModel } from '@/models/players.model';
 import { TeamModel } from '@/models/teams.model';
+import { UserModel } from '@/models/users.model';
 import { PLAYERS_ROLES } from '@/utils/constants';
 import { Service } from 'typedi';
+import { LogService } from './log.service';
 
 @Service()
 export class PlayerService {
@@ -61,5 +63,91 @@ export class PlayerService {
 
     // Return true if the user has not exceeded the limit players for each role
     return true;
+  }
+
+  public async listPlayerToSell(playerId: string, price: number, user: IUser): Promise<IPlayer> {
+    const player = await PlayerModel.findById(playerId);
+
+    if (!player) throw new HttpException(404, 'Player not found');
+
+    if (player.userId.toString() !== user._id.toString()) {
+      throw new HttpException(403, 'You are not authorized to list this player for sale');
+    }
+
+    // Get the length of the players of the team.
+    const teamCount = await PlayerModel.find({ teamId: player.teamId }).countDocuments();
+
+    if (teamCount - 1 < 15) {
+      throw new HttpException(400, `You can't list a player for sale if your team has exactly 15 players`);
+    }
+
+    player.upToSale = true;
+    player.saleValue = price;
+
+    await player.save();
+
+    return player.toJSON() as IPlayer;
+  }
+
+  public async removePlayerFromMarket(playerId: string, user: IUser): Promise<IPlayer> {
+    const player = await PlayerModel.findById(playerId);
+
+    if (!player) throw new HttpException(404, 'Player not found');
+
+    if (player.userId.toString() !== user._id.toString()) {
+      throw new HttpException(403, 'You are not authorized to remove this player from sale');
+    }
+
+    player.upToSale = false;
+    player.saleValue = 0;
+
+    await player.save();
+
+    return player.toJSON() as IPlayer;
+  }
+
+  public async purchasePlayerFromMarket(playerId: string, user: IUser): Promise<IPlayer> {
+    const player = await PlayerModel.findById(playerId);
+
+    if (!player) throw new HttpException(404, 'Player not found');
+
+    if (player.userId.toString() === user._id.toString()) {
+      throw new HttpException(400, 'You can not purchase your own player');
+    }
+
+    if (!player.upToSale) {
+      throw new HttpException(400, 'Player is not for sale');
+    }
+
+    const buyerUser = await UserModel.findById(user._id);
+    const sellerUser = await UserModel.findById(player.userId);
+
+    // Just in case even when its a one in a million chance to happen
+    if (!buyerUser || !sellerUser) throw new HttpException(404, 'User not found');
+
+    // Check Balance
+    if (buyerUser.balance < player.saleValue) throw new HttpException(400, 'You do not have enough balance to purchase this player');
+
+    // Update buyer balance and playersCountRight
+    buyerUser.balance -= player.saleValue;
+    buyerUser.playersCountRight[player.role.toLowerCase()] += 1;
+
+    // Update seller balance and playersCountRight
+    sellerUser.balance += player.saleValue;
+    sellerUser.playersCountRight[player.role.toLowerCase()] -= 1;
+
+    // Update player
+    player.userId = buyerUser._id;
+    player.upToSale = false;
+    player.saleValue = 0;
+
+    await buyerUser.save();
+    await sellerUser.save();
+    await player.save();
+
+    // Save Logs
+    await new LogService().createLog(user?._id, `Purchased player ${player.name} for ${player.saleValue}`);
+
+    return player.toJSON() as IPlayer;
   }
 }
