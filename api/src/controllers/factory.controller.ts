@@ -1,5 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
-import { Container } from 'typedi';
+import { NextFunction, Response } from 'express';
 import { RequestWithUser } from '@interfaces/auth.interface';
 import { FactoryService } from '@/services/factory.service';
 import { TeamModel } from '@/models/teams.model';
@@ -14,6 +13,17 @@ export class FactoryController {
       const teams = await this.teamsFactory.getAll(req);
 
       res.status(200).json({ data: teams });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getAvailablePlayersComposition = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const user = req.user;
+      const availablePlayers = await this.playersFactory.getAvailablePlayers(user);
+
+      res.status(200).json({ data: availablePlayers });
     } catch (error) {
       next(error);
     }
