@@ -10,6 +10,16 @@ export class FactoryController {
 
   public getTeams = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
+      const teams = await this.teamsFactory.getAll(req);
+
+      res.status(200).json({ data: teams });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getMeTeams = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
       req.query = { ...req.query, userId: req.user._id };
       const teams = await this.teamsFactory.getAll(req);
 

@@ -14,6 +14,7 @@ export class FactoryRoute implements Routes {
 
   private initializeRoutes() {
     this.router.get(`${this.path}/teams`, AuthMiddleware, this.factory.getTeams);
+    this.router.get(`${this.path}/me-teams`, AuthMiddleware, this.factory.getMeTeams);
     this.router.get(`${this.path}/players`, AuthMiddleware, this.factory.getPlayers);
     this.router.get(`${this.path}/market-players`, AuthMiddleware, this.factory.getMarketPlayers);
     this.router.get(`${this.path}/composition`, AuthMiddleware, this.factory.getAvailablePlayersComposition);
