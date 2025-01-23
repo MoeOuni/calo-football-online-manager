@@ -6,5 +6,6 @@ export const factoryQueryKeys = {
   all: ["factory"],
   details: () => [...factoryQueryKeys.all, "detail"],
   composition: () => [...factoryQueryKeys.all, "composition"],
+  teams: () => [...factoryQueryKeys.all, "teams"],
   detail: (id: string) => [...factoryQueryKeys.details(), id],
 };
