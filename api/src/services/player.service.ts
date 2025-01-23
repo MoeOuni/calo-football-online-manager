@@ -15,6 +15,9 @@ export class PlayerService {
 
     await newPlayer.save();
 
+    // Save Log
+    await new LogService().createLog(player.userId, `Created player ${player.name}`);
+
     return newPlayer.toJSON() as IPlayer;
   }
 
@@ -86,6 +89,9 @@ export class PlayerService {
 
     await player.save();
 
+    // Save Log
+    await new LogService().createLog(user?._id, `Listed player ${player.name} for sale for ${price}`);
+
     return player.toJSON() as IPlayer;
   }
 
@@ -102,6 +108,9 @@ export class PlayerService {
     player.saleValue = 0;
 
     await player.save();
+
+    // Save Log
+    await new LogService().createLog(user?._id, `Removed player ${player.name} from sale`);
 
     return player.toJSON() as IPlayer;
   }
@@ -147,6 +156,7 @@ export class PlayerService {
 
     // Save Logs
     await new LogService().createLog(user?._id, `Purchased player ${player.name} for ${player.saleValue}`);
+    await new LogService().createLog(sellerUser?._id, `Sold player ${player.name} for ${player.saleValue}`);
 
     return player.toJSON() as IPlayer;
   }

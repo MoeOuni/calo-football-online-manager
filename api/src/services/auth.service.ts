@@ -6,6 +6,7 @@ import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
 import { IUser } from '@interfaces/users.interface';
 import { UserModel } from '@models/users.model';
 import crypto from 'crypto';
+import { LogService } from './log.service';
 
 const createToken = (user: IUser): TokenData => {
   const dataStoredInToken: DataStoredInToken = { _id: user._id };
@@ -87,6 +88,9 @@ export class AuthService {
     findUser.passwordResetExpires = undefined;
 
     await findUser.save();
+
+    // Save Log (messages can be enhanced later)
+    await new LogService().createLog(findUser._id, `Reset Password`);
 
     return findUser;
   }

@@ -2,8 +2,6 @@ import { NextFunction, Response } from 'express';
 import { Container } from 'typedi';
 import { RequestWithUser } from '@interfaces/auth.interface';
 import { PlayerService } from '@/services/player.service';
-import { IPlayer } from '@/interfaces/player.interface';
-import { stat } from 'fs';
 
 export class PlayerController {
   public player = Container.get(PlayerService);
