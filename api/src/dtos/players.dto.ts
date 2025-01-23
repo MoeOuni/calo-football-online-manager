@@ -1,4 +1,4 @@
-import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
 export class PlayerDataDto {
   @IsString()
@@ -27,4 +27,15 @@ export class PlayerDataDto {
   @IsNumber()
   @IsOptional()
   public saleValue: number;
+}
+
+export class SellPlayerDto {
+  @IsString()
+  @IsNotEmpty({ message: 'Player ID should not be empty' })
+  public playerId: string;
+
+  @IsNumber()
+  @IsNotEmpty({ message: 'Price should not be empty' })
+  @Min(1, { message: 'Price should be at least 1' })
+  public price: number;
 }

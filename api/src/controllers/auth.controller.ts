@@ -17,7 +17,7 @@ export class AuthController {
       res.setHeader('Set-Cookie', [cookie]);
 
       if (createdNow) {
-        const mailer = new MailService(findUser, ORIGIN);
+        const mailer = new MailService(findUser);
 
         await mailer.sendWelcome();
       }
@@ -52,7 +52,7 @@ export class AuthController {
 
       const { resetLink, user } = await this.auth.generatePasswordResetLink(email);
 
-      const mailer = new MailService(user, ORIGIN, {
+      const mailer = new MailService(user, {
         resetLink,
       });
       await mailer.sendRestPwd();
@@ -75,7 +75,7 @@ export class AuthController {
 
       const ipAddress = req.ip;
       const userAgent = req.get('User-Agent');
-      const mailer = new MailService(resetUser, ORIGIN, {
+      const mailer = new MailService(resetUser, {
         ipAddress,
         userAgent,
       });
