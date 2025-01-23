@@ -30,14 +30,14 @@ export class MailService {
   }
 
   // Send the actual email
-  public async send(template: string, subject: string) {
+  public async send(template: string, subject: string, contentSubject?: string) {
     try {
       // Render HTML based on the EJS template
       const templateFile = path.resolve(__dirname, `../templates/emails/${template}.ejs`);
       const html = await ejs.renderFile(templateFile, {
-        subject,
+        subject: contentSubject || subject,
         cssFileUrl: this.url,
-        pageTitle: subject,
+        pageTitle: contentSubject || subject,
         payload: this.payload,
       });
 
@@ -59,7 +59,7 @@ export class MailService {
   }
 
   public async sendWelcome() {
-    await this.send('welcome', 'Welcome to the Calo Football Manager!');
+    await this.send('welcome', 'Welcome to Calo Football Online Manager – Your Journey Starts Now!', 'Welcome to the World of Football Management');
   }
 
   public async sendRestPwd() {
