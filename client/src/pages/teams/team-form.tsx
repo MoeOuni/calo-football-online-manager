@@ -26,11 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { PlayerRole } from "@/lib/types";
-import {
-  API_STATUS_CODES,
-  DEFAULT_PLAYERS,
-  PLAYERS_ROLES,
-} from "@/lib/contants";
+import { API_STATUS_CODES, PLAYERS_ROLES } from "@/lib/contants";
 import { Info, Loader2, Pin, PlusCircle, Save, Trash2 } from "lucide-react";
 import { teamFormSchema, type TeamFormValues } from "@/lib/schemas";
 import {
@@ -46,10 +42,11 @@ import { useToast } from "@/hooks/use-toast";
 import { useCreateTeam } from "@/api/teams/use-create-team";
 import { toast as sonnerToast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "@/providers/user-provider";
 
 export default function TeamForm() {
   const { toast } = useToast();
-
+  const { composition } = useUser();
   const teamMutation = useCreateTeam();
   const navigate = useNavigate();
 
@@ -164,19 +161,18 @@ export default function TeamForm() {
                   <h3 className="text-lg font-semibold mb-2">
                     Available Roles
                   </h3>
-                  {Object.entries(DEFAULT_PLAYERS).map(
-                    ([role, requiredCount]) => (
+                  {composition &&
+                    Object.entries(composition).map(([role, requiredCount]) => (
                       <div
                         key={role}
                         className="flex justify-between items-center"
                       >
-                        <span>{role}s:</span>
+                        <span className="capitalize">{role}s:</span>
                         <span>
                           {getRoleCount(role as PlayerRole)} / {requiredCount}
                         </span>
                       </div>
-                    )
-                  )}
+                    ))}
                 </div>
               </div>
 
@@ -240,7 +236,8 @@ export default function TeamForm() {
                                       {Object.entries(PLAYERS_ROLES).map(
                                         ([key, role]) => (
                                           <SelectItem key={key} value={role}>
-                                            {role}
+                                            {role.charAt(0).toUpperCase() +
+                                              role.slice(1)}
                                           </SelectItem>
                                         )
                                       )}
@@ -273,12 +270,12 @@ export default function TeamForm() {
                     variant="ghost"
                     disabled={teamMutation.isPending}
                     onClick={() => {
-                      const availableRole = Object.entries(
-                        DEFAULT_PLAYERS
-                      ).find(
-                        ([role, limit]) =>
-                          getRoleCount(role as PlayerRole) < limit
-                      )?.[0] as PlayerRole | undefined;
+                      const availableRole =
+                        composition &&
+                        (Object.entries(composition).find(
+                          ([role, limit]) =>
+                            getRoleCount(role as PlayerRole) < limit
+                        )?.[0] as PlayerRole | undefined);
 
                       if (availableRole) {
                         append({
@@ -286,7 +283,9 @@ export default function TeamForm() {
                           role: availableRole,
                         });
                       } else {
-                        alert("All roles have reached their limits.");
+                        sonnerToast.info(
+                          "All roles have reached their limits."
+                        );
                       }
                     }}
                     className="gap-1"

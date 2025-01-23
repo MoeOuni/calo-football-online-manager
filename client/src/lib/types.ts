@@ -1,1 +1,1 @@
-export type PlayerRole = "Goalkeeper" | "Defender" | "Midfielder" | "Attacker";
+export type PlayerRole = "goalkeeper" | "defender" | "midfielder" | "attacker";

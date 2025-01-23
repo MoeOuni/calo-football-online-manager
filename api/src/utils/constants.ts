@@ -1,6 +1,6 @@
 export const PLAYERS_ROLES = {
-  GOALKEEPER: 'Goalkeeper',
-  DEFENDER: 'Defender',
-  MIDFIELDER: 'Midfielder',
-  ATTACKER: 'Attacker',
+  GOALKEEPER: 'goalkeeper',
+  DEFENDER: 'defender',
+  MIDFIELDER: 'midfielder',
+  ATTACKER: 'attacker',
 };

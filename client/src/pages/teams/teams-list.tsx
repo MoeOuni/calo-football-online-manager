@@ -27,19 +27,19 @@ export default function TeamsList() {
                 <div className="flex flex-wrap gap-2">
                   <Badge variant="secondary">
                     Goalkeepers:{" "}
-                    {team.players.filter((p) => p.role === "Goalkeeper").length}
+                    {team.players.filter((p) => p.role === "goalkeeper").length}
                   </Badge>
                   <Badge variant="secondary">
                     Defenders:{" "}
-                    {team.players.filter((p) => p.role === "Defender").length}
+                    {team.players.filter((p) => p.role === "defender").length}
                   </Badge>
                   <Badge variant="secondary">
                     Midfielders:{" "}
-                    {team.players.filter((p) => p.role === "Midfielder").length}
+                    {team.players.filter((p) => p.role === "midfielder").length}
                   </Badge>
                   <Badge variant="secondary">
                     Attackers:{" "}
-                    {team.players.filter((p) => p.role === "Attacker").length}
+                    {team.players.filter((p) => p.role === "attacker").length}
                   </Badge>
                 </div>
                 <details>

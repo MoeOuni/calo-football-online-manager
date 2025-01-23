@@ -1,3 +1,10 @@
+export interface IPlayerComposition {
+  goalkeeper: number;
+  defender: number;
+  midfielder: number;
+  attacker: number;
+}
+
 export interface IUser {
   _id?: string;
   email: string;
@@ -9,12 +16,7 @@ export interface IUser {
   createdAt?: Date;
   updatedAt?: Date;
   image?: string;
-  playersCountRight?: {
-    goalkeeper: number;
-    defender: number;
-    midfielder: number;
-    attacker: number;
-  };
+  playersCountRight?: IPlayerComposition;
 }
 
 export interface ILogin {

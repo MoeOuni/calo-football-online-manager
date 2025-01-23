@@ -7,7 +7,7 @@ export class PlayerDataDto {
 
   @IsString()
   @IsNotEmpty({ message: 'Player role should not be empty' })
-  @IsEnum(['Goalkeeper', 'Defender', 'Midfielder', 'Attacker'], {
+  @IsEnum(['goalkeeper', 'defender', 'midfielder', 'attacker'], {
     message: "Player role should be 'Goalkeeper', 'Defender', 'Midfielder', or 'Attacker'",
   })
   public role: string;

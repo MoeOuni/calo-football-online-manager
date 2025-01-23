@@ -3,7 +3,7 @@ import { DEFAULT_PLAYERS } from "@/lib/contants";
 
 const playerSchema = z.object({
     name: z.string().min(1, "Player name is required"),
-    role: z.enum(["Goalkeeper", "Defender", "Midfielder", "Attacker"], {
+    role: z.enum(["goalkeeper", "defender", "midfielder", "attacker"], {
         errorMap: () => ({ message: "Role must be one of Goalkeeper, Defender, Midfielder, or Attacker" }),
     }),
 });

@@ -7,16 +7,16 @@ export const API_STATUS_CODES = {
 };
 
 export const PLAYERS_ROLES = {
-  GOALKEEPER: 'Goalkeeper',
-  DEFENDER: 'Defender',
-  MIDFIELDER: 'Midfielder',
-  ATTACKER: 'Attacker',
+  GOALKEEPER: 'goalkeeper',
+  DEFENDER: 'defender',
+  MIDFIELDER: 'midfielder',
+  ATTACKER: 'attacker',
 };
 
 
 export const DEFAULT_PLAYERS: { [key in PlayerRole]: number } = {
-  Goalkeeper: 3,
-  Defender: 6,
-  Midfielder: 6,
-  Attacker: 5,
+  goalkeeper: 3,
+  defender: 6,
+  midfielder: 6,
+  attacker: 5,
 };
