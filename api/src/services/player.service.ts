@@ -145,6 +145,15 @@ export class PlayerService {
       throw new HttpException(400, 'Player is not for sale');
     }
 
+    const buyerUserTeam = await TeamModel.findOne({ userId: user?._id });
+
+    if (!buyerUserTeam) throw new HttpException(400, "You can't purchase players when you don't have a team");
+
+    // Check if a user has more 25 players in his team
+    const teamCount = await PlayerModel.find({ teamId: buyerUserTeam._id }).countDocuments();
+
+    if (teamCount === 25) throw new HttpException(400, "You can't purchase anymore players your team already contains the maximum number");
+
     const buyerUser = await UserModel.findById(user._id);
     const sellerUser = await UserModel.findById(player.userId);
 
@@ -185,6 +194,7 @@ export class PlayerService {
     player.userId = buyerUser._id;
     player.upToSale = false;
     player.saleValue = 0;
+    player.teamId = buyerUserTeam._id;
     await player.save();
 
     return player.toJSON() as IPlayer;
