@@ -149,7 +149,7 @@ export class PlayerService {
 
     if (!buyerUserTeam) throw new HttpException(400, "You can't purchase players when you don't have a team");
 
-    // Check if a user has more 25 players in his team
+    // Check if a user has 25 players in his team if true then the purchase is not permited. (Team has to have 15 - 25 players)
     const teamCount = await PlayerModel.find({ teamId: buyerUserTeam._id }).countDocuments();
 
     if (teamCount === 25) throw new HttpException(400, "You can't purchase anymore players your team already contains the maximum number");
