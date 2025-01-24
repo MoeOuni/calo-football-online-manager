@@ -35,7 +35,10 @@ export class FactoryController {
   public getMarketPlayers = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     req.query = { ...req.query, upToSale: 'true' };
 
-    const players = await this.playersFactory.getAll(req);
+    const players = await this.playersFactory.getAllPopulated(req, {
+      path: 'teamId',
+      select: 'name',
+    });
 
     res.status(200).json(players);
   };

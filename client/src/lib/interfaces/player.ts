@@ -6,6 +6,7 @@ export interface Player {
   role: PlayerRole;
   userId?: string;
   upToSale?: boolean;
+  saleValue?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

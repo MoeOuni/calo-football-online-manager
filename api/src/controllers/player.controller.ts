@@ -41,4 +41,24 @@ export class PlayerController {
       next(error);
     }
   };
+
+  public purchasePlayerFromMarket = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const { playerId } = req.params;
+
+      if (!playerId) {
+        throw new Error('Player ID is required');
+      }
+
+      const player = await this.player.purchasePlayerFromMarket(playerId, req.user);
+
+      res.status(201).json({
+        data: player,
+        status: 'success',
+        message: `${player.name} has been purchased 🎉`,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }

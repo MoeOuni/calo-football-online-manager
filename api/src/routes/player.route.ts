@@ -18,5 +18,6 @@ export class PlayerRoute implements Routes {
     this.router.use(AuthMiddleware);
     this.router.post(`${this.path}/sell`, ValidationMiddleware(SellPlayerDto), this.player.listPlayerToSell);
     this.router.put(`${this.path}/sell/remove/:playerId`, this.player.removePlayerFromMarket);
+    this.router.post(`${this.path}/purchase/:playerId`, this.player.purchasePlayerFromMarket);
   }
 }
