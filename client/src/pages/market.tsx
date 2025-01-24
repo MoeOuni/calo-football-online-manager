@@ -18,14 +18,35 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useDebounce } from "@/hooks/use-debounce";
 import { useMarketFilter } from "@/hooks/use-market-filters";
 import { PLAYERS_ROLES } from "@/lib/contants";
 import { IPlayerPopulated } from "@/lib/interfaces";
 import { Eraser, LoaderCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 
+/**
+ * This component uses the `useMarketPlayer` hook to fetch market player data and the `useMarketFilter` hook to manage the filter query state.
+ *
+ * The `useDebounce` hook is used to delay the update of the query state until the user has stopped typing for a specified amount of time (500ms).
+ * This helps to reduce the number of unnecessary API calls and improves performance by preventing the query state from being updated too frequently.
+ */
 const Market = () => {
   const { data, isLoading } = useMarketPlayer();
   const [query, setQuery] = useMarketFilter();
+
+  const [localQueryValue, setLocalQueryValue] = useState(
+    query || {
+      name: "",
+      team: "",
+      role: "",
+    }
+  );
+  const debouncedQueryValue = useDebounce(localQueryValue, 500);
+
+  useEffect(() => {
+    setQuery(debouncedQueryValue);
+  }, [debouncedQueryValue, setQuery]);
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-bold">
@@ -36,20 +57,26 @@ const Market = () => {
           className="w-full"
           type="text"
           placeholder="Search by player name..."
-          value={query.name}
-          onChange={(event) => setQuery({ ...query, name: event.target.value })}
+          value={localQueryValue.name}
+          onChange={(event) =>
+            setLocalQueryValue({ ...localQueryValue, name: event.target.value })
+          }
         />
         <Input
           className="w-full"
           type="text"
           placeholder="Search by team name..."
-          value={query.team}
-          onChange={(event) => setQuery({ ...query, team: event.target.value })}
+          value={localQueryValue.team}
+          onChange={(event) =>
+            setLocalQueryValue({ ...localQueryValue, team: event.target.value })
+          }
         />
         <div className="flex items-center gap-2">
           <Select
-            value={query.role}
-            onValueChange={(value) => setQuery({ ...query, role: value })}
+            value={localQueryValue.role}
+            onValueChange={(value) => {
+              setLocalQueryValue({ ...localQueryValue, role: value });
+            }}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Filter roles" />
