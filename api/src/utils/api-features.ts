@@ -54,7 +54,9 @@ export class APIFeatures {
 
   search(): APIFeatures {
     if (this.queryString?.search) {
+      console.log(this.queryString.search);
       const searchBy: string = this.queryString.search.split(',').join(' ');
+      console.log(searchBy);
       this.query = this.query?.searchDocument(searchBy.toString());
     }
 

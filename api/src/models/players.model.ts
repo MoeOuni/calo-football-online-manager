@@ -35,6 +35,13 @@ const PlayerSchema: Schema = new Schema(
   },
   {
     timestamps: true,
+    query: {
+      searchDocument(value: string) {
+        return this.where({
+          $or: [{ name: { $regex: value, $options: 'i' } }],
+        });
+      },
+    },
   },
 );
 

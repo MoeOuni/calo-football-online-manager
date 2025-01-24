@@ -33,13 +33,6 @@ export class FactoryService {
     return await features.query;
   };
 
-  public getAllAggregated = async (req: Request, aggregateObj: any) => {
-    const aggregation = this.Model.aggregate(aggregateObj);
-    const features = new APIFeatures(aggregation, req.query).search().filter().sort().limitFields().paginate();
-
-    return await features.query.exec();
-  };
-
   public getAvailablePlayers = async (
     user: IUser,
   ): Promise<{

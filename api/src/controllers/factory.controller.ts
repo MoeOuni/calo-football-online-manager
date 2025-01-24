@@ -35,10 +35,14 @@ export class FactoryController {
   public getMarketPlayers = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     req.query = { ...req.query, upToSale: 'true' };
 
-    const players = await this.playersFactory.getAllPopulated(req, {
-      path: 'teamId',
-      select: 'name',
-    });
+    const populateMatch = { path: 'teamId', select: 'name' };
+    if (req.query['teamId.name']) {
+      populateMatch['match'] = { $regex: req.query['teamId.name'], $options: 'i' };
+    }
+
+    delete req.query['teamId.name'];
+
+    const players = await this.playersFactory.getAllPopulated(req, { ...populateMatch });
 
     res.status(200).json(players);
   };

@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { ReactQueryProvider } from "./providers/react-query-provider.tsx";
 import { LoaderCircle } from "lucide-react";
 import { AuthProvider } from "./providers/authentication-provider.tsx";
-
+import { NuqsAdapter } from "nuqs/adapters/react";
 import "./index.css";
 import App from "./App.tsx";
 import { UserProvider } from "./providers/user-provider.tsx";
@@ -18,13 +18,15 @@ createRoot(document.getElementById("root")!).render(
     }
   >
     <ThemeProvider defaultTheme="system" storageKey="x-ui-theme">
-      <ReactQueryProvider>
-        <AuthProvider>
-          <UserProvider>
-            <App />
-          </UserProvider>
-        </AuthProvider>
-      </ReactQueryProvider>
+      <NuqsAdapter>
+        <ReactQueryProvider>
+          <AuthProvider>
+            <UserProvider>
+              <App />
+            </UserProvider>
+          </AuthProvider>
+        </ReactQueryProvider>
+      </NuqsAdapter>
     </ThemeProvider>
   </Suspense>
 );

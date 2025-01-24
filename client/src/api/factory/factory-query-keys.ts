@@ -10,5 +10,11 @@ export const factoryQueryKeys = {
   meTeams: () => [...factoryQueryKeys.all, "me-teams"],
   players: () => [...factoryQueryKeys.all, "players"],
   marketPlayers: () => [...factoryQueryKeys.all, "market-players"],
+  marketPlayersWithFilters: (name: string, team: string, role: string) => [
+    ...factoryQueryKeys.players(),
+    name,
+    team,
+    role,
+  ],
   detail: (id: string) => [...factoryQueryKeys.details(), id],
 };
