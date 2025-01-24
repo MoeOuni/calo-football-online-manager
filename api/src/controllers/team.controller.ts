@@ -44,7 +44,7 @@ export class TeamController {
     try {
       const teams = await this.team.getMeTeam(req.user._id);
 
-      res.status(200).json(teams);
+      res.status(200).json(teams[0]);
     } catch (error) {
       next(error);
     }
