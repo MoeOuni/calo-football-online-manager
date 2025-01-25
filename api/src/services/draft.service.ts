@@ -2,6 +2,7 @@ import { IDraft } from '@/interfaces/draft.interface';
 import { IUser } from '@/interfaces/users.interface';
 import { DraftModel } from '@/models/drafts.model';
 import { Service } from 'typedi';
+import { LogService } from './log.service';
 
 @Service()
 export class DraftService {
@@ -20,6 +21,9 @@ export class DraftService {
     });
 
     await newDraft.save();
+
+    // Save Log
+    await new LogService().createLog(user._id, 'Saved team creation draft');
 
     return newDraft.toJSON() as IDraft;
   }
