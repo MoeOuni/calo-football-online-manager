@@ -9,9 +9,9 @@ export const dbConnection = async () => {
     },
   };
 
-  // if (NODE_ENV !== 'production') {
-  //   set('debug', true);
-  // }
+  if (NODE_ENV !== 'production') {
+    set('debug', true);
+  }
 
   await connect(dbConfig.url, dbConfig.options);
 };
