@@ -150,7 +150,9 @@ export default function TeamForm() {
                         <FormControl>
                           <Input
                             placeholder="Enter team name"
-                            disabled={teamMutation.isPending}
+                            disabled={
+                              teamMutation.isPending || draftMutation.isPending
+                            }
                             {...field}
                           />
                         </FormControl>
@@ -231,7 +233,10 @@ export default function TeamForm() {
                                     <Input
                                       {...field}
                                       placeholder="Player name"
-                                      disabled={teamMutation.isPending}
+                                      disabled={
+                                        teamMutation.isPending ||
+                                        draftMutation.isPending
+                                      }
                                     />
                                   </FormControl>
                                   <FormMessage />
@@ -248,7 +253,10 @@ export default function TeamForm() {
                                   <Select
                                     onValueChange={field.onChange}
                                     value={field.value}
-                                    disabled={teamMutation.isPending}
+                                    disabled={
+                                      teamMutation.isPending ||
+                                      draftMutation.isPending
+                                    }
                                   >
                                     <FormControl>
                                       <SelectTrigger>
@@ -276,7 +284,10 @@ export default function TeamForm() {
                               variant="destructive"
                               onClick={() => remove(index)}
                               size="sm"
-                              disabled={teamMutation.isPending}
+                              disabled={
+                                teamMutation.isPending ||
+                                draftMutation.isPending
+                              }
                             >
                               <Trash2 className="h-5" />
                             </Button>
@@ -291,7 +302,7 @@ export default function TeamForm() {
                     size="sm"
                     type="button"
                     variant="ghost"
-                    disabled={teamMutation.isPending}
+                    disabled={teamMutation.isPending || draftMutation.isPending}
                     onClick={() => {
                       const availableRole =
                         composition &&
@@ -318,18 +329,26 @@ export default function TeamForm() {
                   </Button>
                   <div className="flex gap-2">
                     <Button
-                      disabled={teamMutation.isPending}
+                      disabled={
+                        teamMutation.isPending || draftMutation.isPending
+                      }
                       type="button"
                       variant="outline"
                       className="gap-1"
                       onClick={saveDraft}
                     >
-                      <Pin className="h-4 w-4" />
+                      {draftMutation.isPending ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Pin className="h-4 w-4" />
+                      )}
                       <span className="hidden md:inline">Save Draft</span>
                     </Button>
 
                     <Button
-                      disabled={teamMutation.isPending}
+                      disabled={
+                        teamMutation.isPending || draftMutation.isPending
+                      }
                       type="submit"
                       className="gap-1"
                     >

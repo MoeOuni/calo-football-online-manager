@@ -11,7 +11,10 @@ export class DraftService {
 
     if (existingDraft) {
       existingDraft.metaJSON = draftData.metaJSON;
+      existingDraft.path = draftData.path;
       await existingDraft.save();
+
+      await new LogService().createLog(user._id, 'Updated team creation draft');
       return existingDraft.toJSON() as IDraft;
     }
 
