@@ -17,20 +17,18 @@ export class FactoryService {
     return await features.query;
   };
 
-  public getAllPopulated = async (req: Request, populateObj: { path: string; select: string }) => {
-    const features = new APIFeatures(
-      this.Model.find().populate({
-        ...populateObj,
-      }),
-      req.query,
-    )
-      .search()
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
+  public getAllPopulated = async (req: Request, populateObj: { path: string; select: string; match?: any }) => {
+    const features = new APIFeatures(this.Model.find(), req.query).search().filter().sort().limitFields().paginate();
 
-    return await features.query;
+    // Populate the documents
+    const results = await features.query.populate({
+      path: populateObj.path,
+      select: populateObj.select,
+      match: populateObj.match || {}, // Apply match condition
+    });
+
+    // Filter out documents where the populated field is null
+    return results.filter((doc: any) => doc[populateObj.path] !== null);
   };
 
   public getAvailablePlayers = async (

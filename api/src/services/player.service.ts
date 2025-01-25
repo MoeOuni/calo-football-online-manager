@@ -246,6 +246,7 @@ export class PlayerService {
     player.upToSale = false;
     player.saleValue = 0;
     player.teamId = buyerUserTeam._id;
+
     await player.save();
 
     return player.toJSON() as IPlayer;

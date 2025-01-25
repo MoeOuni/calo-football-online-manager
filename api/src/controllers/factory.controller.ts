@@ -50,11 +50,10 @@ export class FactoryController {
 
     const populateMatch = { path: 'teamId', select: 'name' };
     if (req.query['teamId.name']) {
-      populateMatch['match'] = { $regex: req.query['teamId.name'], $options: 'i' };
+      populateMatch['match'] = { name: { $regex: req.query['teamId.name'], $options: 'i' } };
     }
 
     delete req.query['teamId.name'];
-
     const players = await this.playersFactory.getAllPopulated(req, { ...populateMatch });
 
     res.status(200).json(players);
