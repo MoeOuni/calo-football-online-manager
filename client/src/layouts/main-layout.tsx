@@ -12,7 +12,7 @@ const MainLayout = () => {
             <Navbar />
           </div>
         </header>
-        <main className="md:container md:mx-auto flex-1 mx-2 my-4 lg:my-10 md:my-6 ">
+        <main className="max-w-[1320px] md:mx-auto flex-1 my-4 lg:my-10 md:my-6 ">
           <Outlet />
         </main>
         <footer className="w-full border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
