@@ -6,10 +6,12 @@ import { IPlayer } from '@/interfaces/player.interface';
 import { TeamService } from '@/services/team.service';
 import { PlayerService } from '@/services/player.service';
 import { LogService } from '@/services/log.service';
+import { DraftService } from '@/services/draft.service';
 
 export class TeamController {
   public team = Container.get(TeamService);
   public player = Container.get(PlayerService);
+  public draft = Container.get(DraftService);
 
   public createTeam = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
@@ -23,6 +25,9 @@ export class TeamController {
       // Bulk create players with the new team's ID (I prefer to name them as bulk instead of many just a habit of mine 😄)
       const playersBulkPayload = players.map((player: IPlayer) => ({ ...player, teamId: newTeam._id, userId: req.user._id }));
       const newPlayers: IPlayer[] = await this.player.bulkCreatePlayers(playersBulkPayload);
+
+      // Delete the draft if exists;
+      await this.draft.deleteDraft('team', req.user);
 
       // Save Log
       await new LogService().createLog(req.user._id, `Created team ${team.name}`);

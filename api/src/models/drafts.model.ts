@@ -5,7 +5,7 @@ const DraftSchema: Schema = new Schema(
   {
     type: {
       type: String,
-      enum: ['market', 'teams', 'players', 'profile'],
+      enum: ['market', 'team', 'player', 'profile'],
     },
     metaJSON: {
       type: Schema.Types.Mixed,
