@@ -70,9 +70,6 @@ export function Navbar() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link to="/profile">Profile</Link>
-            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

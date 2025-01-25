@@ -24,6 +24,14 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { ILog } from "@/lib/interfaces";
+import {
+  LogListSkeleton,
+  TeamDetailsSkeleton,
+} from "@/components/loading-skeletons";
+import {
+  DashboardTeamEmptyState,
+  LogEmptyState,
+} from "@/components/empty-state";
 
 const positionData: Record<
   PlayerRole,
@@ -80,65 +88,75 @@ export default function Home() {
       ) : (
         <Loader2 className="h-4 w-4" />
       )}
+      {team.isLoading ? (
+        <TeamDetailsSkeleton />
+      ) : team?.data ? (
+        <>
+          <div className="flex items-center gap-2">
+            <strong>{team.data.name}</strong>
+
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8 rounded-full"
+            >
+              <ReceiptText className="h-4 w-4" />
+            </Button>
+            <Button
+              size="icon"
+              className="h-8 w-8 rounded-full"
+              // onClick={() => navigate(`/team/save/${team.data._id}`)}
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
+          </div>
+
+          <div>
+            <p className="text-sm text-muted-foreground mb-2">
+              Last update:{" "}
+              {team?.data.updatedAt &&
+                formatDistanceToNow(new Date(team.data.updatedAt), {
+                  addSuffix: true,
+                })}
+            </p>
+            <p className="text-sm text-muted-foreground mb-2">
+              Team composition:
+            </p>
+            <Table className="mb-4">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Position</TableHead>
+                  <TableHead>Count</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {Object.entries(team.data.composition).map(
+                  ([position, count]) => (
+                    <TableRow key={position}>
+                      <TableCell className="capitalize">{position}</TableCell>
+                      <TableCell>{count as number} Player(s)</TableCell>
+                    </TableRow>
+                  )
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </>
+      ) : (
+        <>
+          <div>
+            <strong>My Team</strong>
+          </div>
+          <DashboardTeamEmptyState />
+        </>
+      )}
 
       <div>
-        {team?.data && (
-          <>
-            <div className="flex items-center gap-2">
-              <strong>{team.data.name}</strong>
-
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-8 w-8 rounded-full"
-              >
-                <ReceiptText className="h-4 w-4" />
-              </Button>
-              <Button
-                size="icon"
-                className="h-8 w-8 rounded-full"
-                // onClick={() => navigate(`/team/save/${team.data._id}`)}
-              >
-                <Pencil className="h-4 w-4" />
-              </Button>
-            </div>
-
-            <div>
-              <p className="text-sm text-muted-foreground mb-2">
-                Last update:{" "}
-                {team?.data.updatedAt &&
-                  formatDistanceToNow(new Date(team.data.updatedAt), {
-                    addSuffix: true,
-                  })}
-              </p>
-              <p className="text-sm text-muted-foreground mb-2">
-                Team composition:
-              </p>
-              <Table className="mb-4">
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Position</TableHead>
-                    <TableHead>Count</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {Object.entries(team.data.composition).map(
-                    ([position, count]) => (
-                      <TableRow key={position}>
-                        <TableCell className="capitalize">{position}</TableCell>
-                        <TableCell>{count as number} Player(s)</TableCell>
-                      </TableRow>
-                    )
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-          </>
-        )}
-
-        <div>
-          <strong>Recent Activities</strong>
-        </div>
+        <strong>Recent Activities</strong>
+      </div>
+      {logs.isLoading ? (
+        <LogListSkeleton />
+      ) : logs?.data?.length !== 0 ? (
         <ul role="list" className="mt-6 space-y-6 pb-2">
           {logs?.data?.map((log: ILog, logIdx: number) => (
             <li key={log._id} className="relative flex gap-x-3">
@@ -168,7 +186,9 @@ export default function Home() {
             </li>
           ))}
         </ul>
-      </div>
+      ) : (
+        <LogEmptyState />
+      )}
     </div>
   );
 }
