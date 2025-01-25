@@ -3,18 +3,20 @@ import { apiClient, teamsQueryKeys, factoryQueryKeys } from "@/api";
 import { TSFixMe } from "@/lib/interfaces";
 import { type TeamFormValues } from "@/lib/schemas";
 import { toast } from "sonner";
+import { useParams } from "react-router-dom";
 
-export function useCreateTeam() {
+export function useUpdateTeam() {
   const queryClient = useQueryClient();
+  const params = useParams();
 
-  const createTeamFn = async (payload: TeamFormValues) => {
-    const response = await apiClient.post("/teams", payload);
+  const updateTeamFn = async (payload: TeamFormValues) => {
+    const response = await apiClient.put(`/teams/${params.id}`, payload);
 
     return response.data;
   };
 
   return useMutation({
-    mutationFn: createTeamFn,
+    mutationFn: updateTeamFn,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: teamsQueryKeys.all,

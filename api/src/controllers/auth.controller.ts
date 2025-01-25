@@ -34,6 +34,10 @@ export class AuthController {
     }
   };
 
+  public getMe = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    res.status(200).json(req.user);
+  };
+
   public logOut = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const userData: IUser = req.user;

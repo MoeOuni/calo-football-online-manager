@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { MoreHorizontal, Tag, Users, XCircle } from "lucide-react";
+import { MoreHorizontal, Tag, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -62,12 +62,6 @@ const PlayersActionMenu = ({ record }: { record: IPlayerPopulated }) => {
               </div>
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4" />
-              Assign to Team
-            </div>
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <SellPlayerDialog

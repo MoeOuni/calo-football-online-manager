@@ -28,7 +28,14 @@ import {
 } from "@/components/ui/select";
 import type { PlayerRole } from "@/lib/types";
 import { API_STATUS_CODES, PLAYERS_ROLES } from "@/lib/contants";
-import { Info, Loader2, Pin, PlusCircle, Save, Trash2 } from "lucide-react";
+import {
+  Info,
+  Loader2,
+  LoaderCircle,
+  PlusCircle,
+  Save,
+  Trash2,
+} from "lucide-react";
 import { teamFormSchema, type TeamFormValues } from "@/lib/schemas";
 import {
   Table,
@@ -38,34 +45,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useCreateTeam } from "@/api/teams/use-create-team";
 import { toast as sonnerToast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/providers/user-provider";
 import HistoryButton from "@/components/history-button";
-import { useSaveDraft, useTeamPopulated } from "@/api";
+import { useTeamPopulated, useUpdateTeam } from "@/api";
+import type { Player } from "@/lib/interfaces";
 
 export default function UpdateTeamForm() {
   const { toast } = useToast();
   const { composition } = useUser();
-
-  const teamMutation = useCreateTeam();
-  const draftMutation = useSaveDraft();
+  const teamMutation = useUpdateTeam();
   const myTeamQuery = useTeamPopulated();
-
   const navigate = useNavigate();
-
-  if (myTeamQuery.isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!myTeamQuery.data) {
-    return <div>No team data found.</div>;
-  }
-
-  // const { name, players } = myTeamQuery.data;
 
   const form = useForm<TeamFormValues>({
     resolver: zodResolver(teamFormSchema),
@@ -75,31 +69,13 @@ export default function UpdateTeamForm() {
     },
     mode: "onChange",
   });
-  const saveDraft = async () => {
-    const values = form.getValues();
-    if (values.team.name && values.players.length > 0) {
-      const response = await draftMutation.mutateAsync({
-        type: "team",
-        metaJSON: values,
-        path: window.location.pathname,
-      });
-      if (response.status === API_STATUS_CODES.SUCCESS) {
-        sonnerToast.success(response.message);
-      }
-    } else {
-      toast({
-        title: "❌ Draft Not Saved",
-        description: "Please provide a team name and add at least one player.",
-      });
-    }
-  };
 
   const { fields, append, remove } = useFieldArray({
     name: "players",
     control: form.control,
   });
 
-  // Watch players field array for the render in the composition/available roles section
+  // Watch players field array for the render in the updateComposition/available roles section
   const watchedPlayers = useWatch({
     control: form.control,
     name: "players",
@@ -113,6 +89,54 @@ export default function UpdateTeamForm() {
       return acc;
     }, {} as Record<PlayerRole, number>);
   }, [watchedPlayers]);
+
+  useEffect(() => {
+    if (myTeamQuery.data) {
+      form.reset({
+        team: { name: myTeamQuery.data.name },
+        players: myTeamQuery.data.players.map((player: Player) => ({
+          _id: player._id,
+          name: player.name,
+          role: player.role,
+        })),
+      });
+    }
+  }, [myTeamQuery.data, form]);
+
+  if (myTeamQuery.isLoading) {
+    return (
+      <div className="flex justify-center items-center w-full h-full">
+        <LoaderCircle className="h-6 w-6 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!myTeamQuery.data) {
+    return null;
+  }
+
+  const updateComposition = {
+    goalkeeper:
+      composition?.goalkeeper +
+      myTeamQuery?.data?.players?.filter(
+        (player: Player) => player.role === "goalkeeper"
+      ).length,
+    attacker:
+      composition?.attacker +
+      myTeamQuery?.data?.players?.filter(
+        (player: Player) => player.role === "attacker"
+      ).length,
+    defender:
+      composition?.defender +
+      myTeamQuery?.data?.players?.filter(
+        (player: Player) => player.role === "defender"
+      ).length,
+    midfielder:
+      composition?.midfielder +
+      myTeamQuery?.data?.players?.filter(
+        (player: Player) => player.role === "midfielder"
+      ).length,
+  };
 
   const getRoleCount = (role: PlayerRole) => roleCounts[role] || 0;
 
@@ -139,7 +163,8 @@ export default function UpdateTeamForm() {
     <div className="mx-auto">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">
-          <HistoryButton /> Create Your Team
+          <HistoryButton /> Update{" "}
+          <span className="text-green-600">{myTeamQuery?.data?.name}</span>
         </h2>
         {teamMutation.isPending && <Loader2 className="h-5 w-5 animate-spin" />}
       </div>
@@ -161,29 +186,21 @@ export default function UpdateTeamForm() {
                         <FormControl>
                           <Input
                             placeholder="Enter team name"
-                            disabled={
-                              teamMutation.isPending || draftMutation.isPending
-                            }
+                            disabled={teamMutation.isPending}
                             {...field}
                           />
                         </FormControl>
                         <FormMessage />
                         <FormDescription>
-                          Build your team by adding 15-25 players, adhering to
-                          the available roles.
+                          Update your team by keeping 15-25 players at all
+                          times, adhering to the available roles.
                           <ul className="my-3 ml-2 md:ml-6 [&>li]:mt-2">
                             <li className="flex items-center space-x-2 cursor-help">
-                              <Info className="h-4 w-4 text-blue-600 flex-shrink-0" />
+                              <Info className="h-4 w-4 text-red-600 flex-shrink-0" />
                               <span>
-                                You can save your progress as a draft and
-                                continue later.
-                              </span>
-                            </li>
-                            <li className="flex items-center space-x-2 cursor-help">
-                              <Info className="h-4 w-4 text-blue-600 flex-shrink-0" />
-                              <span>
-                                Players obtained from the market will be
-                                eligible for team selection.
+                                Existing Players in the team can't be removed or
+                                update you can only add the rest of your
+                                available composition.
                               </span>
                             </li>
                           </ul>
@@ -197,18 +214,20 @@ export default function UpdateTeamForm() {
                   <h3 className="text-lg font-semibold mb-2">
                     Available Roles
                   </h3>
-                  {composition &&
-                    Object.entries(composition).map(([role, requiredCount]) => (
-                      <div
-                        key={role}
-                        className="flex justify-between items-center"
-                      >
-                        <span className="capitalize">{role}s:</span>
-                        <span>
-                          {getRoleCount(role as PlayerRole)} / {requiredCount}
-                        </span>
-                      </div>
-                    ))}
+                  {updateComposition &&
+                    Object.entries(updateComposition).map(
+                      ([role, requiredCount]) => (
+                        <div
+                          key={role}
+                          className="flex justify-between items-center"
+                        >
+                          <span className="capitalize">{role}s:</span>
+                          <span>
+                            {getRoleCount(role as PlayerRole)} / {requiredCount}
+                          </span>
+                        </div>
+                      )
+                    )}
                 </div>
               </div>
 
@@ -246,7 +265,9 @@ export default function UpdateTeamForm() {
                                       placeholder="Player name"
                                       disabled={
                                         teamMutation.isPending ||
-                                        draftMutation.isPending
+                                        fields[index]._id
+                                          ? true
+                                          : false
                                       }
                                     />
                                   </FormControl>
@@ -266,7 +287,9 @@ export default function UpdateTeamForm() {
                                     value={field.value}
                                     disabled={
                                       teamMutation.isPending ||
-                                      draftMutation.isPending
+                                      fields[index]._id
+                                        ? true
+                                        : false
                                     }
                                   >
                                     <FormControl>
@@ -296,8 +319,9 @@ export default function UpdateTeamForm() {
                               onClick={() => remove(index)}
                               size="sm"
                               disabled={
-                                teamMutation.isPending ||
-                                draftMutation.isPending
+                                teamMutation.isPending || field._id
+                                  ? true
+                                  : false
                               }
                             >
                               <Trash2 className="h-5" />
@@ -313,11 +337,11 @@ export default function UpdateTeamForm() {
                     size="sm"
                     type="button"
                     variant="ghost"
-                    disabled={teamMutation.isPending || draftMutation.isPending}
+                    disabled={teamMutation.isPending}
                     onClick={() => {
                       const availableRole =
-                        composition &&
-                        (Object.entries(composition).find(
+                        updateComposition &&
+                        (Object.entries(updateComposition).find(
                           ([role, limit]) =>
                             getRoleCount(role as PlayerRole) < limit
                         )?.[0] as PlayerRole | undefined);
@@ -340,26 +364,7 @@ export default function UpdateTeamForm() {
                   </Button>
                   <div className="flex gap-2">
                     <Button
-                      disabled={
-                        teamMutation.isPending || draftMutation.isPending
-                      }
-                      type="button"
-                      variant="outline"
-                      className="gap-1"
-                      onClick={saveDraft}
-                    >
-                      {draftMutation.isPending ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <Pin className="h-4 w-4" />
-                      )}
-                      <span className="hidden md:inline">Save Draft</span>
-                    </Button>
-
-                    <Button
-                      disabled={
-                        teamMutation.isPending || draftMutation.isPending
-                      }
+                      disabled={teamMutation.isPending}
                       type="submit"
                       className="gap-1"
                     >
@@ -368,7 +373,7 @@ export default function UpdateTeamForm() {
                       ) : (
                         <Save className="h-4 w-4" />
                       )}
-                      <span className="hidden md:inline">Create Team</span>
+                      <span className="hidden md:inline">Update Team</span>
                     </Button>
                   </div>
                 </CardFooter>

@@ -86,9 +86,7 @@ export class PlayerService {
       playersCount[existingPlayer.role.toLowerCase()] += 1;
     });
 
-    const newPlayers = players.filter(player => {
-      return !existingPlayers.some(existingPlayer => existingPlayer._id.toString() === player._id.toString());
-    });
+    const newPlayers = players.filter(player => !player._id);
 
     newPlayers.forEach(player => {
       playersCount[player.role.toLowerCase()] += 1;

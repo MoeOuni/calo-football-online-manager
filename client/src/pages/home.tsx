@@ -32,6 +32,7 @@ import {
   DashboardTeamEmptyState,
   LogEmptyState,
 } from "@/components/empty-state";
+import { useNavigate } from "react-router-dom";
 
 const positionData: Record<
   PlayerRole,
@@ -51,7 +52,7 @@ export default function Home() {
     limit: 5,
   });
 
-  console.log(logs?.data);
+  const navigate = useNavigate();
   return (
     <div className="space-y-4">
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
@@ -105,7 +106,7 @@ export default function Home() {
             <Button
               size="icon"
               className="h-8 w-8 rounded-full"
-              // onClick={() => navigate(`/team/save/${team.data._id}`)}
+              onClick={() => navigate(`/team/update/${team.data._id}`)}
             >
               <Pencil className="h-4 w-4" />
             </Button>

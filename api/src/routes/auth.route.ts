@@ -19,5 +19,6 @@ export class AuthRoute implements Routes {
     this.router.post(`${this.path}logout`, AuthMiddleware, this.auth.logOut);
     this.router.post(`${this.path}forgot-password`, ValidationMiddleware(ForgotEmailDto), this.auth.forgotPwd);
     this.router.put(`${this.path}reset-password/:token`, ValidationMiddleware(PasswordResetDto), this.auth.resetPwd);
+    this.router.get(`${this.auth}/me`, AuthMiddleware, this.auth.getMe);
   }
 }
