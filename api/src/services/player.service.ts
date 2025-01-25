@@ -94,7 +94,13 @@ export class PlayerService {
     await player.save();
 
     // Save Log
-    await new LogService().createLog(user?._id, `Listed player ${player.name} for sale for ${price}`);
+    await new LogService().createLog(
+      user?._id,
+      `Listed player ${player.name} for sale for ${new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(price)}`,
+    );
 
     // Send Email
     await new MailService(user, {
@@ -176,8 +182,20 @@ export class PlayerService {
     await sellerUser.save();
 
     // Save Logs
-    await new LogService().createLog(user?._id, `Purchased player ${player.name} for ${player.saleValue}`);
-    await new LogService().createLog(sellerUser?._id, `Sold player ${player.name} for ${player.saleValue}`);
+    await new LogService().createLog(
+      user?._id,
+      `Purchased player ${player.name} for ${new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(player.saleValue)}`,
+    );
+    await new LogService().createLog(
+      sellerUser?._id,
+      `Sold player ${player.name} for ${new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      }).format(player.saleValue)}`,
+    );
 
     // Send Emails
     await new MailService(sellerUser, {
