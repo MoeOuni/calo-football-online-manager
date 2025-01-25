@@ -60,6 +60,9 @@ export class App {
 
   private initializeRoutes(routes: Routes[]) {
     routes.forEach(route => {
+      this.app.get('/ping', (req, res) => {
+        res.send('pong 🏓');
+      });
       this.app.use('/', route.router);
     });
   }

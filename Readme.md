@@ -48,7 +48,7 @@ Ensure you have the following installed:
 ### Verifying the Setup  
 
 1. **API Server**  
-   Open your browser or use a tool like Postman or cURL to verify that the backend server is running. Navigate to `http://localhost:3000/api` (or any available route you have defined).  
+   Open your browser or use a tool like Postman or cURL to verify that the backend server is running. Navigate to `http://localhost:3000/ping`.  
 
 2. **Frontend Application**  
    Open your browser and go to `http://localhost:5173` to view the running React app.  
@@ -174,6 +174,8 @@ Below is a breakdown of the tasks completed during the development of this proje
 - The project was developed with a strong emphasis on modularity, scalability, and quality.  
 - Testing and code reviews were an integral part of the development process, ensuring a robust and well-functioning application.  
 - While the development timeline provides a general overview of the tasks, the actual time spent on each task may vary. This is due to the dynamic nature of the work and the focus on delivering the best possible outcomes, rather than strictly adhering to a fixed schedule.  
+- I purposefully included the environment variables in the repository to save time during setup and minimize additional configuration or documentation needs.  
+- I'm open to a call if needed to explain my approach and provide further clarity on the steps I followed.  
 
 ---
 
