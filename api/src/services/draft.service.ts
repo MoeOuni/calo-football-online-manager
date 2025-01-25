@@ -24,14 +24,9 @@ export class DraftService {
     return newDraft.toJSON() as IDraft;
   }
 
-  public async getDraft(type: string, user: IUser): Promise<IDraft> {
+  public async getDraft(type: string, user: IUser): Promise<IDraft | undefined | null> {
     const draft = await DraftModel.findOne({ idUser: user._id, type: type });
-
-    if (!draft) {
-      throw new Error('Draft not found');
-    }
-
-    return draft.toJSON() as IDraft;
+    return draft ? (draft.toJSON() as IDraft) : null;
   }
 
   public async deleteDraft(type: string, user: IUser): Promise<void> {

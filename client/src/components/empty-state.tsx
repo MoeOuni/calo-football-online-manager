@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useUser } from "@/providers/user-provider";
 import { PlusCircle, ShoppingBag, UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -36,9 +37,10 @@ export function EmptyPlayersState() {
 }
 
 export function EmptyTeamsState() {
+  const { draft } = useUser();
   const Navigate = useNavigate();
   return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] p-4 text-center ">
+    <div className="flex flex-col items-center justify-center min-h-[400px] p-4 text-center">
       <div className="w-20 h-20 mb-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -57,18 +59,20 @@ export function EmptyTeamsState() {
       </div>
       <h2 className="text-2xl font-bold mb-2">No teams created yet</h2>
       <p className="text-gray-500 mb-8 max-w-md">
-        Get started by creating your first team.
+        {draft
+          ? "You have a draft team. Complete the creation process to get started."
+          : "Get started by creating your first team."}
       </p>
       <Button onClick={() => Navigate("/teams/save")}>
         <PlusCircle className="mr-2 h-4 w-4" />
-        Create New Team
+        {draft ? "Complete Team Creation" : "Create New Team"}
       </Button>
     </div>
   );
 }
 
 export function EmptyMarketState() {
-  const Navigate = useNavigate()
+  const Navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] p-4 text-center">
@@ -77,13 +81,13 @@ export function EmptyMarketState() {
       </div>
       <h2 className="text-2xl font-bold mb-2">No players in the market</h2>
       <p className="text-gray-500 mb-8 max-w-md">
-        Start by adding players to the market or check back later for new listings.
+        Start by adding players to the market or check back later for new
+        listings.
       </p>
       <Button onClick={() => Navigate("/players")}>
         <PlusCircle className="mr-2 h-4 w-4" />
         Add Player to Market
       </Button>
     </div>
-  )
+  );
 }
-

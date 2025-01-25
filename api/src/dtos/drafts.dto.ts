@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmptyObject, IsObject, IsString } from 'class-validator';
+import { IsEnum, IsNotEmptyObject, IsObject, IsOptional, IsString } from 'class-validator';
 
 export class SaveDraftDto {
   @IsString()
@@ -10,4 +10,8 @@ export class SaveDraftDto {
   @IsObject({ message: 'MetaJSON should be a valid object' })
   @IsNotEmptyObject()
   public metaJSON: any;
+
+  @IsString()
+  @IsOptional()
+  public path: string;
 }

@@ -14,6 +14,10 @@ const DraftSchema: Schema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'users',
     },
+    path: {
+      type: String,
+      default: '/', // default path
+    },
   },
   {
     timestamps: true,

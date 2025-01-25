@@ -44,21 +44,44 @@ import { toast as sonnerToast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/providers/user-provider";
 import HistoryButton from "@/components/history-button";
+import { useSaveDraft } from "@/api";
 
 export default function TeamForm() {
   const { toast } = useToast();
-  const { composition } = useUser();
+  const { composition, draft } = useUser();
+
   const teamMutation = useCreateTeam();
+  const draftMutation = useSaveDraft();
+
   const navigate = useNavigate();
 
   const form = useForm<TeamFormValues>({
     resolver: zodResolver(teamFormSchema),
     defaultValues: {
-      team: { name: "" },
-      players: [],
+      team: { name: draft?.metaJSON?.team?.name || "" },
+      players: draft?.metaJSON?.players || [],
     },
     mode: "onChange",
   });
+
+  const saveDraft = async () => {
+    const values = form.getValues();
+    if (values.team.name && values.players.length > 0) {
+      const response = await draftMutation.mutateAsync({
+        type: "team",
+        metaJSON: values,
+        path: window.location.pathname,
+      });
+      if (response.status === API_STATUS_CODES.SUCCESS) {
+        sonnerToast.success(response.message);
+      }
+    } else {
+      toast({
+        title: "❌ Draft Not Saved",
+        description: "Please provide a team name and add at least one player.",
+      });
+    }
+  };
 
   const { fields, append, remove } = useFieldArray({
     name: "players",
@@ -101,16 +124,13 @@ export default function TeamForm() {
       });
     }
   };
-
   return (
-    <div className="mx-auto ">
+    <div className="mx-auto">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">
           <HistoryButton /> Create Your Team
         </h2>
-        {teamMutation.isPending && (
-            <Loader2 className="h-5 w-5 animate-spin" />
-          )}
+        {teamMutation.isPending && <Loader2 className="h-5 w-5 animate-spin" />}
       </div>
       <Card className="w-full">
         <CardContent className="p-3 md:p-6">
@@ -302,6 +322,7 @@ export default function TeamForm() {
                       type="button"
                       variant="outline"
                       className="gap-1"
+                      onClick={saveDraft}
                     >
                       <Pin className="h-4 w-4" />
                       <span className="hidden md:inline">Save Draft</span>

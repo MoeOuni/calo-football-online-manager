@@ -6,7 +6,6 @@ import { AuthProvider } from "./providers/authentication-provider.tsx";
 import { NuqsAdapter } from "nuqs/adapters/react";
 import "./index.css";
 import App from "./App.tsx";
-import { UserProvider } from "./providers/user-provider.tsx";
 import { ThemeProvider } from "./providers/theme-provider.tsx";
 
 createRoot(document.getElementById("root")!).render(
@@ -21,9 +20,7 @@ createRoot(document.getElementById("root")!).render(
       <NuqsAdapter>
         <ReactQueryProvider>
           <AuthProvider>
-            <UserProvider>
-              <App />
-            </UserProvider>
+            <App />
           </AuthProvider>
         </ReactQueryProvider>
       </NuqsAdapter>

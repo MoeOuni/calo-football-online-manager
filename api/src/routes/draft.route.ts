@@ -6,7 +6,7 @@ import { ValidationMiddleware } from '@/middlewares/validation.middleware';
 import { Router } from 'express';
 
 export class DraftRoute implements Routes {
-  public path = '/draft';
+  public path = '/drafts';
   public router = Router();
   public draft = new DraftController();
 
