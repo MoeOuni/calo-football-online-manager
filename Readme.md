@@ -106,7 +106,7 @@ client/
 └── tsconfig.json       # TypeScript configuration for the frontend  
 ```
 
-## Backend Folder Structure
+### Frontend (Api)
 
 The backend is organized to ensure clarity, scalability, and ease of maintenance. Below is an overview of the folder structure:
 
