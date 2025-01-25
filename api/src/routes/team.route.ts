@@ -3,7 +3,7 @@ import { Routes } from '@interfaces/routes.interface';
 import { TeamController } from '@/controllers/team.controller';
 import { AuthMiddleware } from '@/middlewares/auth.middleware';
 import { ValidationMiddleware } from '@/middlewares/validation.middleware';
-import { CreateTeamDto } from '@/dtos/teams.dto';
+import { SaveTeamDto } from '@/dtos/teams.dto';
 
 export class TeamRoute implements Routes {
   public path = '/teams';
@@ -17,7 +17,8 @@ export class TeamRoute implements Routes {
   private initializeRoutes() {
     // All routes in this path are protected by the AuthMiddleware (Requires the user to be logged in)
     this.router.use(AuthMiddleware);
-    this.router.post(`${this.path}`, ValidationMiddleware(CreateTeamDto), this.team.createTeam);
+    this.router.post(`${this.path}`, ValidationMiddleware(SaveTeamDto), this.team.createTeam);
+    this.router.put(`${this.path}/:teamId`, ValidationMiddleware(SaveTeamDto), this.team.updateTeam);
     this.router.get(`${this.path}/me`, this.team.getMeTeams);
   }
 }

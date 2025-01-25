@@ -69,6 +69,41 @@ export class PlayerService {
     return true;
   }
 
+  public async bulkCheckUpdatePlayersRight(players: IPlayer[], user: IUser): Promise<{ status: boolean; newPlayers: IPlayer[] }> {
+    const existingPlayers = await PlayerModel.find({
+      userId: user._id,
+    });
+
+    const playersCount = {
+      [PLAYERS_ROLES.GOALKEEPER.toLowerCase()]: 0,
+      [PLAYERS_ROLES.DEFENDER.toLowerCase()]: 0,
+      [PLAYERS_ROLES.MIDFIELDER.toLowerCase()]: 0,
+      [PLAYERS_ROLES.ATTACKER.toLowerCase()]: 0,
+    };
+
+    // Count existing players roles
+    existingPlayers.forEach(existingPlayer => {
+      playersCount[existingPlayer.role.toLowerCase()] += 1;
+    });
+
+    const newPlayers = players.filter(player => {
+      return !existingPlayers.some(existingPlayer => existingPlayer._id.toString() === player._id.toString());
+    });
+
+    newPlayers.forEach(player => {
+      playersCount[player.role.toLowerCase()] += 1;
+    });
+
+    // Check if the user has exceeded the limit players for each role
+    Object.keys(playersCount).forEach(role => {
+      if (playersCount[role.toLowerCase()] > user.playersCountRight[role.toLowerCase()]) {
+        throw new HttpException(400, `You have exceeded the players limit for '${role}s'`);
+      }
+    });
+
+    return { status: true, newPlayers };
+  }
+
   public async listPlayerToSell(playerId: string, price: number, user: IUser): Promise<IPlayer> {
     const player = await PlayerModel.findById(playerId);
 

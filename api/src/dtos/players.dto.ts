@@ -2,6 +2,10 @@ import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Min } fr
 
 export class PlayerDataDto {
   @IsString()
+  @IsOptional()
+  public _id: string;
+
+  @IsString()
   @IsNotEmpty({ message: 'Player name should not be empty' })
   public name: string;
 

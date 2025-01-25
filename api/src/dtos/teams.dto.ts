@@ -12,7 +12,7 @@ export class TeamDataDto {
   public image: string;
 }
 
-export class CreateTeamDto {
+export class SaveTeamDto {
   @IsNotEmpty({ message: 'Team should not be empty' })
   @ValidateNested() // Ensure nested validation is applied
   @Type(() => TeamDataDto) // Transform to TeamDataDto

@@ -87,4 +87,17 @@ export class TeamService {
 
     return teams;
   }
+
+  public async updateTeam(teamId: string, team: ITeam): Promise<ITeam> {
+    const updatedTeam = await TeamModel.findOneAndUpdate({ _id: teamId }, team, { new: true });
+    return updatedTeam;
+  }
+
+  public async checkTeamOwnership(teamId: string, userId: string): Promise<boolean> {
+    const team = await TeamModel.findOne({ _id: teamId, userId: userId });
+
+    if (!team) return false;
+
+    return true;
+  }
 }
