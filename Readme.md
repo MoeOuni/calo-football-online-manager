@@ -18,8 +18,8 @@ Ensure you have the following installed:
 
 1. **Clone the Repository**
    ```bash
-   git clone <repository-url>
-   cd <repository-folder>
+   git clone https://github.com/MoeOuni/calo-football-online-manager.git
+   cd calo-football-online-manager
    ```
 
 2. **Install Dependencies**  
@@ -72,12 +72,12 @@ If you'd like to use a custom MongoDB database instead of the pre-configured one
 1. Update the `MONGO_URI` in the `.env` file located in the `api` folder with your own database connection string.  
 2. Restart the backend server to apply the changes:  
    ```bash  
-   npm run dev  
+   npm start 
     ```
 
 ## Folder Structure
 
-The project is organized to ensure scalability, maintainability, and clarity. Below is the updated breakdown for both the **frontend** and **backend**, including the `hooks` folder for reusable custom hooks.
+The project is organized to ensure scalability, maintainability, and clarity. Below is the updated breakdown for both the **frontend** and **backend**.
 
 ---
 
