@@ -39,7 +39,7 @@ Ensure you have the following installed:
      ```bash  
      cd api  
      npm install  
-     npm run dev  
+     npm start
      ```  
      This will install all the dependencies for the backend and start the API server at `http://localhost:3000`.  
 
@@ -132,3 +132,57 @@ api/
 └── tsconfig.json        # TypeScript configuration  
 ```
 
+## Development Timeline  
+
+Below is a breakdown of the tasks completed during the development of this project:  
+
+1. **Day 1: Understanding Requirements and Project Initialization**  
+   - 4 hours understanding the project requirements, setting up the repository, and initializing the project.  
+
+2. **Day 2: Authentication Module Implementation**  
+   - Designed and implemented the authentication system from scratch, including:  
+     - 2 hours User registration and login.  
+     - 2 hours User reset password workflow.  
+     - 1 hours Designing and added reusable email templates for notifications and user communication. 
+
+3. **Day 3: Email Templates and Initializing Team & Player Modules**  
+   - 2 hours Designing and added reusable email templates for notifications and user communication. 
+   - 4 hours Planning and setting up the foundational structure for the **Teams** and **Players** modules.  
+
+4. **Days 4 & 5: Completing Team & Player Modules**  
+   - 8-10 hours Finalized the implementation of the **Team** and **Player** modules, including:  
+     - CRUD operations for teams and players (Delete excluded).  
+     - Association of players with teams.  
+     - Designing an easy to use User interfaces.
+   - 1-2 hours Conducted extensive testing, identifying and fixing potential exceptions and edge cases.  
+
+5. **Day 6: Dashboard and Purchase Feature (Market)**  
+   - 2 hours Added a functional **Dashboard** for better user experience and insights.  
+   - 2 hours Implemented the **Purchase Feature (Market)**.  
+   - 1 hour Implemented Filters for **Purchase Feature (Market)**.  
+   - 1 hour Extended email templates to cover purchase notifications.  
+   - 1 hour Performed an overall review and testing of the entire application, improving its quality.  
+
+6. **Day 7: Code Readability and Documentation**  
+   - 4 hours Focused on improving code readability, following best practices for naming conventions and formatting.  
+   - 2 hours Enhanced documentation across the project, including comments and README updates for better developer understanding.  
+
+---
+
+## Key Takeaways  
+
+- The project was developed with a strong emphasis on modularity, scalability, and quality.  
+- Testing and code reviews were an integral part of the development process, ensuring a robust and well-functioning application.  
+- While the development timeline provides a general overview of the tasks, the actual time spent on each task may vary. This is due to the dynamic nature of the work and the focus on delivering the best possible outcomes, rather than strictly adhering to a fixed schedule.  
+
+---
+
+## Feedback and Reflections  
+
+This project was a valuable and rewarding experience. While challenging at times, it provided an opportunity to push boundaries and refine both technical and problem-solving skills.  
+
+Your thoughts and suggestions for improvement are always welcome!  
+
+---
+
+**Created with passion and dedication by Moe. ❤️** 
