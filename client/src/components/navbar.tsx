@@ -9,13 +9,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Users, UserCircle, BarChart3, User } from "lucide-react";
+import { Users, UserCircle, BarChart3, User, CircleGauge } from "lucide-react";
 import { Sidebar } from "./sidebar";
 import { useAuth } from "@/providers/authentication-provider";
 import { ModeToggle } from "./mode-toggle";
 
 const navItems = [
-  { name: "Teams", to: "/teams", icon: Users },
+  { name: "Dashboard", to: "/", icon: CircleGauge },
+  { name: "Team", to: "/team", icon: Users },
   { name: "Players", to: "/players", icon: User },
   { name: "Market", to: "/market", icon: BarChart3 },
 ];

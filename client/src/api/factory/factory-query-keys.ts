@@ -16,5 +16,6 @@ export const factoryQueryKeys = {
     team,
     role,
   ],
+  logs: () => [...factoryQueryKeys.all, "logs"],
   detail: (id: string) => [...factoryQueryKeys.details(), id],
 };

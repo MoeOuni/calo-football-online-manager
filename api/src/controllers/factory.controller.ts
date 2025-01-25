@@ -3,16 +3,29 @@ import { RequestWithUser } from '@interfaces/auth.interface';
 import { FactoryService } from '@/services/factory.service';
 import { TeamModel } from '@/models/teams.model';
 import { PlayerModel } from '@/models/players.model';
+import { LogModel } from '@/models/logs.model';
 
 export class FactoryController {
   public teamsFactory = new FactoryService(TeamModel);
   public playersFactory = new FactoryService(PlayerModel);
+  public logsFactory = new FactoryService(LogModel);
 
   public getTeams = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const teams = await this.teamsFactory.getAll(req);
 
       res.status(200).json(teams);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  public getLogs = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      req.query = { ...req.query, userId: req.user._id };
+      const logs = await this.logsFactory.getAll(req);
+
+      res.status(200).json(logs);
     } catch (error) {
       next(error);
     }

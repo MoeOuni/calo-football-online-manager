@@ -111,7 +111,7 @@ export default function TeamForm() {
 
     if (response?.status === API_STATUS_CODES.SUCCESS) {
       sonnerToast(response?.message);
-      navigate("/teams");
+      navigate("/team");
     }
   };
 

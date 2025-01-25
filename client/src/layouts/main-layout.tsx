@@ -12,12 +12,12 @@ const MainLayout = () => {
             <Navbar />
           </div>
         </header>
-        <main className="flex-1 lg:mx-11 md:mx-6 mx-2 my-4 lg:my-10 md:my-6 ">
+        <main className="md:container md:mx-auto flex-1 mx-2 my-4 lg:my-10 md:my-6 ">
           <Outlet />
         </main>
         <footer className="w-full border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="w-full flex h-14 items-center">
-            <Footer/>
+            <Footer />
           </div>
         </footer>
       </div>

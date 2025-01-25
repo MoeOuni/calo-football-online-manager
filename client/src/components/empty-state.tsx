@@ -28,7 +28,7 @@ export function EmptyPlayersState() {
         Start building your roster by adding your first player. Players are the
         heart of your team!
       </p>
-      <Button onClick={() => Navigate("/teams/save")}>
+      <Button onClick={() => Navigate("/team/save")}>
         <UserPlus className="mr-2 h-4 w-4" />
         Create New Team
       </Button>
@@ -63,7 +63,7 @@ export function EmptyTeamsState() {
           ? "You have a draft team. Complete the creation process to get started."
           : "Get started by creating your first team."}
       </p>
-      <Button onClick={() => Navigate("/teams/save")}>
+      <Button onClick={() => Navigate("/team/save")}>
         <PlusCircle className="mr-2 h-4 w-4" />
         {draft ? "Complete Team Creation" : "Create New Team"}
       </Button>

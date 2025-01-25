@@ -5,10 +5,11 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Users, BarChart3, User, Menu, Volleyball } from "lucide-react";
+import { Users, BarChart3, User, Menu, Volleyball, CircleGauge } from "lucide-react";
 
 const navItems = [
-  { name: "Teams", to: "/teams", icon: Users },
+  { name: "Dashboard", to: "/", icon: CircleGauge },
+  { name: "Teams", to: "/team", icon: Users },
   { name: "Players", to: "/players", icon: User },
   { name: "Market", to: "/market", icon: BarChart3 },
 ];

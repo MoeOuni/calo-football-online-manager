@@ -63,7 +63,7 @@ const ProtectedRoutes = memo(() => {
           <Route index element={<Home />} />
           <Route path="market" element={<Market />} />
           <Route path="players" element={<Players />} />
-          <Route path="teams" element={<Teams />}>
+          <Route path="team" element={<Teams />}>
             <Route index element={<TeamsList />} />
             <Route path="save" element={<TeamForm />} />
           </Route>

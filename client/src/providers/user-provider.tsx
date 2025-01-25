@@ -62,7 +62,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   }, [compositionQuery.isSuccess, setComposition, compositionQuery.data]);
 
   useEffect(() => {
-    if (draftQuery.isSuccess) {
+    if (draftQuery.isSuccess && draftQuery.data) {
       setDraft(draftQuery.data);
       toast.info(`You have a saved draft on ${draftQuery.data?.type}`, {
         action: {

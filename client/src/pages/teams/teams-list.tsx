@@ -91,7 +91,7 @@ export default function TeamsList() {
                     <Button
                       variant="default"
                       size="sm"
-                      onClick={() => navigate(`/teams/save/${team.data._id}`)}
+                      onClick={() => navigate(`/team/save/${team.data._id}`)}
                     >
                       <Pencil className="h-4 w-4" />
                       Update
