@@ -8,7 +8,8 @@ const Home = lazy(() => import("@/pages/home"));
 const Market = lazy(() => import("@/pages/market"));
 const Players = lazy(() => import("@/pages/players"));
 const Teams = lazy(() => import("@/pages/teams/teams"));
-const TeamForm = lazy(() => import("@/pages/teams/team-form"));
+const SaveTeamForm = lazy(() => import("@/pages/teams/save-team-form"));
+const UpdateTeamForm = lazy(() => import("@/pages/teams/update-team-form"));
 const TeamsList = lazy(() => import("@/pages/teams/teams-list"));
 
 const Login = lazy(() => import("@/pages/auth/login"));
@@ -65,7 +66,8 @@ const ProtectedRoutes = memo(() => {
           <Route path="players" element={<Players />} />
           <Route path="team" element={<Teams />}>
             <Route index element={<TeamsList />} />
-            <Route path="save" element={<TeamForm />} />
+            <Route path="save" element={<SaveTeamForm />} />
+            <Route path="update/:id" element={<UpdateTeamForm />} />
           </Route>
           <Route path="*" element={<Navigate to={"/"} />} />
         </Route>

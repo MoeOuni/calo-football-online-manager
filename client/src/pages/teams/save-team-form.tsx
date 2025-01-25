@@ -46,7 +46,7 @@ import { useUser } from "@/providers/user-provider";
 import HistoryButton from "@/components/history-button";
 import { useSaveDraft } from "@/api";
 
-export default function TeamForm() {
+export default function SaveTeamForm() {
   const { toast } = useToast();
   const { composition, draft } = useUser();
 

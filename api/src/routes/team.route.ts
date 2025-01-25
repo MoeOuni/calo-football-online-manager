@@ -20,5 +20,6 @@ export class TeamRoute implements Routes {
     this.router.post(`${this.path}`, ValidationMiddleware(SaveTeamDto), this.team.createTeam);
     this.router.put(`${this.path}/:teamId`, ValidationMiddleware(SaveTeamDto), this.team.updateTeam);
     this.router.get(`${this.path}/me`, this.team.getMeTeams);
+    this.router.get(`${this.path}/populate/:teamId`, this.team.getTeamPopulatedById);
   }
 }

@@ -2,6 +2,7 @@ import { HttpException } from '@/exceptions/HttpException';
 import { ITeam } from '@/interfaces/team.interface';
 import { TeamModel } from '@/models/teams.model';
 import { Service } from 'typedi';
+import { Types } from 'mongoose';
 
 @Service()
 export class TeamService {
@@ -99,5 +100,44 @@ export class TeamService {
     if (!team) return false;
 
     return true;
+  }
+
+  public async getTeamPopulatedById(teamId: string): Promise<{
+    team: {
+      _id: string;
+      name: string;
+      userId: string;
+    };
+    players: {
+      _id: string;
+      name: string;
+      role: string;
+      teamId: string;
+    }[];
+  }> {
+    const team = await TeamModel.aggregate([
+      {
+        $match: {
+          _id: new Types.ObjectId(teamId),
+        },
+      },
+      {
+        $lookup: {
+          from: 'players',
+          localField: '_id',
+          foreignField: 'teamId',
+          as: 'players',
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          userId: 1,
+          players: 1,
+        },
+      },
+    ]);
+
+    return team[0];
   }
 }

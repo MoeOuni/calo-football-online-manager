@@ -56,6 +56,17 @@ export class TeamController {
     }
   };
 
+  public getTeamPopulatedById = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const { teamId } = req.params;
+      const team = await this.team.getTeamPopulatedById(teamId);
+
+      res.status(200).json(team);
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public updateTeam = async (req: RequestWithUser, res: Response, next: NextFunction) => {
     try {
       const { team, players } = req.body;

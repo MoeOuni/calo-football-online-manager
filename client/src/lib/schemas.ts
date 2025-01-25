@@ -1,6 +1,7 @@
 import * as z from "zod";
 
 const playerSchema = z.object({
+  _id: z.string().optional().nullable(),
   name: z.string().min(1, "Player name is required"),
   role: z.enum(["goalkeeper", "defender", "midfielder", "attacker"], {
     errorMap: () => ({
@@ -24,8 +25,7 @@ export const teamFormSchema = z.object({
       return isValidPlayerCount;
     },
     {
-      message:
-        "The total number of players is not between 15 and 25",
+      message: "The total number of players is not between 15 and 25",
     }
   ),
 });
