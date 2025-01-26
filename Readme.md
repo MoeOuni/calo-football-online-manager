@@ -181,7 +181,7 @@ Below is a breakdown of the tasks completed during the development of this proje
 
 ## Feedback and Reflections  
 
-This project was a valuable and rewarding experience. While challenging at times, it provided an opportunity to push boundaries and refine both technical and problem-solving skills.  
+At first, I struggled with the decision of whether a user should be allowed to manage multiple teams or just one. Ultimately, I drew inspiration from real football logic, where a manager typically handles only one team at a time. I also felt that dedicating an entire week to this task wasn’t necessary, as it could have been completed in just 2 or 3 days if I had strictly followed the initial requirements., so I expanded the project scope by adding features like a dashboard, email notifications, and logging user activities. I even considered implementing a chat system to enable communication between managers for price negotiations, although I didn't get to it yet. To maximize my time and showcase my skills, I included update functions and focused on refining the overall experience. There’s still so much potential for future improvements, and I’m eager to explore more features.
 
 Your thoughts and suggestions for improvement are always welcome!  
 
