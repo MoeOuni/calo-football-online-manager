@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { EmptyTeamsState } from "@/components/empty-state";
-import { useMeTeams } from "@/api";
+import { useMeTeams, usePlayer } from "@/api";
 import { LoaderCircle, Pencil, ReceiptText } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -15,11 +15,13 @@ import {
 } from "@/components/ui/table";
 import { useNavigate } from "react-router-dom";
 import HistoryButton from "@/components/history-button";
-
+import { PlayerListingDrawer } from "@/components/player-listing-drawer";
 
 export default function TeamsList() {
   const team = useMeTeams();
   const navigate = useNavigate();
+
+  const players = usePlayer();
 
   return (
     <div className="space-y-4">
@@ -84,10 +86,16 @@ export default function TeamsList() {
                   </Table>
 
                   <div className="flex justify-between">
-                    <Button variant="outline" size="sm">
-                      <ReceiptText className="h-4 w-4" />
-                      Details
-                    </Button>
+                    <PlayerListingDrawer players={players?.data}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={players.isLoading}
+                      >
+                        <ReceiptText className="h-4 w-4" />
+                        Details
+                      </Button>
+                    </PlayerListingDrawer>
                     <Button
                       variant="default"
                       size="sm"

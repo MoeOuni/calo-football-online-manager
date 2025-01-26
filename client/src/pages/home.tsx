@@ -12,7 +12,7 @@ import {
   Pencil,
 } from "lucide-react";
 import { PlayerRole } from "@/lib/types";
-import { useLogs, useMeTeams } from "@/api";
+import { useLogs, useMeTeams, usePlayer } from "@/api";
 import { formatDistanceToNow } from "date-fns";
 import {
   Table,
@@ -33,6 +33,7 @@ import {
   LogEmptyState,
 } from "@/components/empty-state";
 import { useNavigate } from "react-router-dom";
+import { PlayerListingDrawer } from "@/components/player-listing-drawer";
 
 const positionData: Record<
   PlayerRole,
@@ -51,6 +52,7 @@ export default function Home() {
     page: 0,
     limit: 5,
   });
+  const players = usePlayer();
 
   const navigate = useNavigate();
   return (
@@ -96,13 +98,16 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <strong>{team.data.name}</strong>
 
-            <Button
-              variant="outline"
-              size="icon"
-              className="h-8 w-8 rounded-full"
-            >
-              <ReceiptText className="h-4 w-4" />
-            </Button>
+            <PlayerListingDrawer players={players?.data}>
+              <Button
+                disabled={players?.isLoading}
+                variant="outline"
+                size="icon"
+                className="h-8 w-8 rounded-full"
+              >
+                <ReceiptText className="h-4 w-4" />
+              </Button>
+            </PlayerListingDrawer>
             <Button
               size="icon"
               className="h-8 w-8 rounded-full"
