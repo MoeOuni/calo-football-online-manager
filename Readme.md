@@ -75,6 +75,10 @@ If you'd like to use a custom MongoDB database instead of the pre-configured one
    npm start 
     ```
 
+### Database Schema
+The schemas include **Users**, **Logs**, **Teams**, **Players**, and **Drafts**, showcasing their relationships and functionalities. A Mermaid diagram illustrating the schema relationships is included for better visualization.
+![db-schema](https://github.com/user-attachments/assets/b2bd6aa5-f5b3-45ca-9b54-e673bf92d87a)
+
 ## Folder Structure
 
 The project is organized to ensure scalability, maintainability, and clarity. Below is the updated breakdown for both the **frontend** and **backend**.
